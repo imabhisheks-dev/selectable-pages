@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>.NET Interview Mastery</title>
+<style>
+:root{
+  --bg:#f4f6fb;--panel:#ffffff;--panel2:#f8fafc;--text:#1a202c;--muted:#64748b;
+  --border:#e2e8f0;--accent:#6366f1;--accent2:#8b5cf6;--good:#10b981;--warn:#f59e0b;
+  --bad:#ef4444;--info:#0ea5e9;--code-bg:#1e293b;--code-text:#e2e8f0;--shadow:0 4px 20px rgba(0,0,0,.06);
+  --tag-bg:#eef2ff;--tag-text:#4338ca;
+}
+[data-theme="dark"]{
+  --bg:#0f172a;--panel:#1e293b;--panel2:#172033;--text:#e2e8f0;--muted:#94a3b8;
+  --border:#334155;--accent:#818cf8;--accent2:#a78bfa;--good:#34d399;--warn:#fbbf24;
+  --bad:#f87171;--info:#38bdf8;--code-bg:#0b1120;--code-text:#e2e8f0;--shadow:0 4px 24px rgba(0,0,0,.4);
+  --tag-bg:#312e81;--tag-text:#c7d2fe;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s}
+a{color:var(--accent);text-decoration:none}
+.hidden{display:none!important}
+/* Header */
+header{position:sticky;top:0;z-index:100;background:var(--panel);border-bottom:1px solid var(--border);box-shadow:var(--shadow)}
+.header-inner{display:flex;align-items:center;gap:16px;padding:12px 20px;flex-wrap:wrap}
+.logo{font-size:1.3rem;font-weight:800;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+.logo span{font-size:.7rem;display:block;color:var(--muted);-webkit-text-fill-color:var(--muted);font-weight:500}
+.hprogress{flex:1;min-width:180px;max-width:360px}
+.hprogress .bar{height:8px;background:var(--border);border-radius:20px;overflow:hidden}
+.hprogress .fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--good));border-radius:20px;transition:width .5s}
+.hprogress .lbl{font-size:.72rem;color:var(--muted);margin-top:3px;display:flex;justify-content:space-between}
+.search-box{flex:1;min-width:200px;position:relative}
+.search-box input{width:100%;padding:9px 12px 9px 34px;border:1px solid var(--border);border-radius:10px;background:var(--panel2);color:var(--text);font-size:.9rem}
+.search-box::before{content:"🔍";position:absolute;left:10px;top:8px;opacity:.5}
+.hbtns{display:flex;gap:8px}
+.btn{padding:8px 14px;border:1px solid var(--border);border-radius:10px;background:var(--panel2);color:var(--text);cursor:pointer;font-size:.85rem;font-weight:600;transition:.2s;white-space:nowrap}
+.btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.primary:hover{opacity:.9}
+.btn.sm{padding:5px 10px;font-size:.78rem}
+/* Layout */
+.layout{display:flex;max-width:1600px;margin:0 auto}
+.sidebar{width:240px;flex-shrink:0;padding:16px 12px;height:calc(100vh - 66px);overflow-y:auto;position:sticky;top:66px;border-right:1px solid var(--border)}
+.sidebar h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:14px 8px 6px}
+.nav-item{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:8px;cursor:pointer;font-size:.86rem;margin-bottom:2px;transition:.15s}
+.nav-item:hover{background:var(--panel2)}
+.nav-item.active{background:var(--accent);color:#fff}
+.nav-item .cnt{font-size:.7rem;background:var(--border);padding:1px 7px;border-radius:10px;color:var(--muted)}
+.nav-item.active .cnt{background:rgba(255,255,255,.25);color:#fff}
+.main{flex:1;padding:20px;min-width:0}
+/* Filters */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.filters select,.filters .chip{padding:6px 12px;border:1px solid var(--border);border-radius:20px;background:var(--panel);color:var(--text);font-size:.82rem;cursor:pointer}
+.chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+/* Cards */
+.qcard{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:.2s;box-shadow:var(--shadow)}
+.qcard:hover{transform:translateY(-2px);border-color:var(--accent)}
+.qcard .qtitle{font-weight:600;font-size:.95rem;margin-bottom:6px}
+.qcard .qmeta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:.72rem}
+.badge{padding:2px 9px;border-radius:20px;font-size:.68rem;font-weight:700}
+.b-Entry,.b-Beginner{background:#dcfce7;color:#166534}
+.b-Junior{background:#dbeafe;color:#1e40af}
+.b-Mid,.b-Intermediate{background:#fef3c7;color:#92400e}
+.b-Senior,.b-Advanced{background:#fed7aa;color:#9a3412}
+.b-Expert{background:#fecaca;color:#991b1b}
+[data-theme="dark"] .b-Entry,[data-theme="dark"] .b-Beginner{background:#14532d;color:#86efac}
+[data-theme="dark"] .b-Junior{background:#1e3a8a;color:#93c5fd}
+[data-theme="dark"] .b-Mid,[data-theme="dark"] .b-Intermediate{background:#78350f;color:#fcd34d}
+[data-theme="dark"] .b-Senior,[data-theme="dark"] .b-Advanced{background:#7c2d12;color:#fdba74}
+[data-theme="dark"] .b-Expert{background:#7f1d1d;color:#fca5a5}
+.tag{padding:2px 8px;border-radius:6px;background:var(--tag-bg);color:var(--tag-text);font-size:.68rem;font-weight:600;cursor:pointer}
+.tag:hover{opacity:.8}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.s-done{background:var(--good)}.s-book{background:var(--info)}.s-rev{background:var(--warn)}
+mark{background:#fde68a;color:#000;padding:0 2px;border-radius:2px}
+/* Detail view */
+.detail{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:24px;box-shadow:var(--shadow)}
+.detail h2{font-size:1.5rem;margin-bottom:12px;line-height:1.3}
+.section{margin:18px 0}
+.section h3{font-size:.95rem;color:var(--accent);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;border-bottom:2px solid var(--border);padding-bottom:4px}
+.answer-body{font-size:.95rem}
+.answer-body p{margin-bottom:10px}
+pre{background:var(--code-bg);color:var(--code-text);padding:14px;border-radius:10px;overflow-x:auto;font-size:.82rem;margin:10px 0;font-family:'Consolas','Monaco',monospace}
+code.inline{background:var(--tag-bg);color:var(--tag-text);padding:1px 6px;border-radius:4px;font-size:.85em}
+.kw{color:#c792ea}.str{color:#c3e88d}.cm{color:#697098}.num{color:#f78c6c}.typ{color:#82aaff}
+[data-theme="dark"] .kw{color:#c792ea}
+.diagram{background:var(--panel2);border:1px dashed var(--border);border-radius:10px;padding:14px;font-family:monospace;white-space:pre;overflow-x:auto;font-size:.8rem;line-height:1.5}
+.action-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.related-list a{display:block;padding:8px 12px;background:var(--panel2);border-radius:8px;margin-bottom:6px;font-size:.85rem;border-left:3px solid var(--accent)}
+.related-list a:hover{background:var(--tag-bg)}
+.detail-nav{display:flex;justify-content:space-between;margin-bottom:14px}
+/* Dashboard */
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:20px}
+.stat-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px;box-shadow:var(--shadow)}
+.stat-card .num{font-size:2rem;font-weight:800;color:var(--accent)}
+.stat-card .lbl{color:var(--muted);font-size:.82rem}
+.prog-row{margin-bottom:12px}
+.prog-row .top{display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:4px}
+.prog-row .bar{height:10px;background:var(--border);border-radius:20px;overflow:hidden}
+.prog-row .fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:20px;transition:width .5s}
+.badges{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+.ach{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px;width:150px;text-align:center;opacity:.4;transition:.3s}
+.ach.unlocked{opacity:1;border-color:var(--good);box-shadow:0 0 0 2px rgba(16,185,129,.15)}
+.ach .ico{font-size:1.8rem}
+.ach .t{font-weight:700;font-size:.85rem;margin-top:4px}
+.ach .d{font-size:.7rem;color:var(--muted)}
+/* Interview mode */
+.iv-controls{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.iv-timer{font-size:1.4rem;font-weight:700;text-align:center;color:var(--accent);margin:10px 0}
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px}
+.modal{background:var(--panel);border-radius:14px;padding:24px;max-width:500px;width:100%;box-shadow:var(--shadow)}
+.modal h3{margin-bottom:12px}
+.modal .row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:.9rem}
+/* Toast */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--accent);color:#fff;padding:12px 20px;border-radius:10px;z-index:300;box-shadow:var(--shadow);animation:sl .3s}
+@keyframes sl{from{transform:translateX(100%);opacity:0}}
+/* pager */
+.pager{display:flex;gap:8px;justify-content:center;margin:16px 0;align-items:center;flex-wrap:wrap}
+.pager button{padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:var(--panel);color:var(--text);cursor:pointer}
+.pager button:disabled{opacity:.4;cursor:default}
+.mobile-toggle{display:none}
+@media(max-width:900px){
+  .sidebar{position:fixed;left:0;top:66px;background:var(--panel);z-index:90;transform:translateX(-100%);transition:.3s}
+  .sidebar.open{transform:translateX(0)}
+  .mobile-toggle{display:block}
+  .hprogress{display:none}
+}
+.weak-item{display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--panel);border:1px solid var(--border);border-radius:10px;margin-bottom:8px}
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tab{padding:8px 16px;border-radius:10px;cursor:pointer;font-weight:600;font-size:.88rem;border:1px solid var(--border);background:var(--panel)}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.validation{font-family:monospace;font-size:.82rem;background:var(--panel2);padding:14px;border-radius:10px;line-height:1.7}
+.validation .pass{color:var(--good);font-weight:700}
+</style>
+</head>
+<body data-theme="light">
+<header>
+  <div class="header-inner">
+    <button class="btn sm mobile-toggle" id="menuBtn">☰</button>
+    <div class="logo">.NET Interview Mastery<span>Prepare • Practice • Perform</span></div>
+    <div class="hprogress">
+      <div class="bar"><div class="fill" id="hpFill" style="width:0%"></div></div>
+      <div class="lbl"><span id="hpPct">0%</span><span id="hpCnt">0 / 0</span></div>
+    </div>
+    <div class="search-box"><input type="text" id="searchInput" placeholder="Search questions, answers, tags..."></div>
+    <div class="hbtns">
+      <button class="btn sm" id="themeBtn">🌙</button>
+      <button class="btn sm" id="exportBtn">⬇ Export</button>
+      <button class="btn sm" id="importBtn">⬆ Import</button>
+      <input type="file" id="importFile" accept=".json" class="hidden">
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="nav-item active" data-view="dashboard">📊 Dashboard</div>
+    <div class="nav-item" data-view="questions" data-cat="__all">📚 All Questions <span class="cnt" id="cntAll">0</span></div>
+    <div class="nav-item" data-view="continue">▶ Continue Learning</div>
+    <div class="nav-item" data-view="interview">🎯 Interview Mode</div>
+    <div class="nav-item" data-view="weak">⚠ Weak Areas</div>
+    <div class="nav-item" data-view="validation">🔧 Data Validation</div>
+    <h4>Topics</h4>
+    <div id="topicNav"></div>
+  </aside>
+
+  <main class="main" id="main"></main>
+</div>
+
+<div id="toastArea"></div>
+<div id="modalArea"></div>
+
+<script>
+/* ============================================================
+   DATASET — All questions from source files.
+   Each: {id, q, topic, difficulty, tags[], hasCode, answer sections}
+   Answers are generated with practical structure. IDs are unique.
+   ============================================================ */
+
+// Difficulty normalization map for display
+const DIFF_ORDER=['Entry','Junior','Mid','Senior','Expert'];
+
+// Raw question definitions grouped by topic file.
+// Format per topic: [ [difficulty, "question", [extra related tags...] ], ... ]
+const RAW = {
+"ADO.NET":{tags:["ADO.NET",".NET","Data Access"],q:[
+["Entry","What is ADO.NET?"],["Junior","What is SqlCommand object?"],["Junior","Describe when you would use the DataView in ADO.NET?"],
+["Junior","What is the basic difference between ADO.NET and Entity Framework?",["Entity Framework"]],["Junior","What is Connection Pooling in ADO.NET?",["Performance"]],
+["Junior","What is the SqlCommandBuilder?"],["Junior","What is exactly meaning of disconnected and connected approach in ADO.NET?"],["Junior","What are the ADO.NET components?"],
+["Junior","What is the DataAdapter object in ADO.NET?"],["Junior","How can you define the DataSet structure?"],["Junior","What do you understand by DataRelation class?"],
+["Mid","What is the difference between DataView, DataTable and DataSet?"],["Mid","What is the difference between Integrated Security = True and Integrated Security = SSPI?",["Security"]],
+["Mid","What is the difference between ExecuteScalar, ExecuteReader and ExecuteNonQuery?"],["Mid","What is Unit Of Work?",["OOP","Design Patterns"]],
+["Mid","What are the differences between using SqlDataAdapter vs SqlDataReader for getting data from a DB?",["Performance"]],
+["Mid","Could you explain me some of the main differences between Connection-oriented access and Connectionless access in ADO.NET?"],
+["Mid","How could you control connection pooling behavior?",["Performance"]],["Mid","Mention what is the difference between ADO.NET and classic ADO?"],
+["Senior","Where should I use connected architecture approach?"],["Senior","What is the difference between OLE DB and ODBC data sources?"],
+["Senior","What is the difference between ADODB, OLEDB and ADO.NET?"],["Senior","Name types of transactions in ADO.NET",["Transactions"]],
+["Senior","Can you explain the difference between a DataReader, a DataAdapter, a Dataset, and a DataView?"],["Senior","What's better: DataSet or DataReader?",["Performance"]],
+["Senior","Is there anything faster than SqlDataReader in .NET?",["Performance"]],["Senior","How could you monitor connection pooling behavior?"],
+["Senior","Could you explain some benefits of Repository Pattern?",["OOP","Design Patterns"]],["Senior","Where should I use disconnected architecture approach?"],
+["Senior","Is it necessary to manually close and dispose of SqlDataReader?",["Memory Management"]],
+["Expert","What is the best and fast way to insert 2 million rows of data into SQL Server?",["SQL Server","Performance"]],
+["Expert","Name some problems that could occur with connection pooling",["Performance"]],
+["Expert","Under what scenarios would setting pooling=false in an ADO.NET connection string be of value when connecting to SQL Server?",["Performance"]]
+]},
+"Agile & Scrum":{tags:["Agile","Scrum","Process"],q:[
+["Entry","Name roles in Scrum"],["Entry","Explain what is Refactoring?"],["Entry","What is Sprint in Scrum?"],["Entry","What is User Stories?"],
+["Entry","What is Scrum?"],["Entry","What is an Epic, User Stories and Task?"],["Entry","What is an Agile iteration?"],
+["Junior","How is Agile different from other software delivery approaches?"],["Junior","What is Test Driven Development?",["Testing","Architecture"]],
+["Junior","If a timebox plan needs to be reprioritized who should re-prioritise it?"],["Junior","Mention the key difference between sprint backlog and product backlog?"],
+["Junior","What is Agile?"],["Junior","What is Story Points/Efforts/Scales?"],["Junior","Explain what is Velocity in Agile?"],
+["Junior","Explain what does it mean by product roadmap?"],["Junior","What is Sprint Planning?"],["Junior","Explain what are Burn-Up and Burn-Down chart?"],
+["Junior","Explain difference between a Product and a Sprint Backlog"],["Junior","Mention what should a burndown chart should highlight?"],
+["Junior","Name some types of meetings or ceremonies in Scrum"],["Junior","Have you ever used Scrum Task Board?"],
+["Mid","Explain the difference between Extreme Programming and Scrum?"],["Mid","What is a Sprint Review?"],["Mid","What does project Velocity mean?"],
+["Mid","What does the Scrum Framework consist from?"],["Mid","Mention what are the challenges involved in Agile software development?"],
+["Mid","What is the Agile Manifesto?"],["Mid","What is Acceptance Criteria?"],["Mid","What are four Agile Manifesto values?"],
+["Mid","Mention what are the advantages of maintaining consistent iteration length throughout the project?"],
+["Mid","Can you explain the purpose of a Burndown Chart?"],["Mid","What are some methodologies used to implement Agile?"],
+["Mid","Mention in detail what are the role's of Scrum Master?"],["Senior","What the Scrum theory is based on?"],
+["Senior","In Agile mention what is the difference between the Incremental and Iterative development?"],["Senior","Explain main differences between Scrum and Agile?"],
+["Senior","What is a Sprint Retrospective?"],["Senior","Mention what are the Agile quality strategies?"],["Senior","What is Scrum Increment?"],
+["Senior","When not to use Agile?"],["Senior","What are the Scrum Values?"],["Senior","Why Continuous Integration is important for Agile?",["CI/CD"]],
+["Senior","Name the 12 Agile Principles"],["Expert","What are the benefits of Burn Up Chart?"],["Expert","What is the Scrum's definition of Done?"],
+["Expert","Explain what is Spike and Zero Sprint in Agile? What is the purpose of it?"],["Expert","Provide some examples of burn-up chart",[],true]
+]},
+"Angular":{tags:["Angular","Frontend","TypeScript"],q:[
+["Entry","What is Routing Guard in Angular?"],["Entry","What is a Module, and what does it contain?"],["Junior","How would you run unit test?",["Testing"]],
+["Junior","What is a Service, and when will you use it?",["Dependency Injection"]],["Junior","What is Interpolation?"],
+["Junior","What is the difference between Structural and Attribute directives in Angular?"],["Junior","What are the differences between AngularJS and Angular?"],
+["Junior","What is the purpose of base href tag?"],["Junior","What's the difference between an Angular Component and Module?"],
+["Junior","How would you protect a component being activated through the router?"],["Junior","What is an Observable?"],
+["Junior","What is a Component? Why would you use it?"],["Junior","What is the minimum definition of a Component?"],["Junior","What is a bootstrapping module?"],
+["Junior","What is an Observer?"],["Junior","What are Observables?"],["Junior","What is the difference between @Component and @Directive in Angular?"],
+["Junior","What is the equivalent of ngShow and ngHide in Angular?"],["Junior","What is the difference between *ngIf vs [hidden]?"],
+["Junior","You have an HTML response I want to display. How do I do that?"],["Mid","What is Subscribing?"],["Mid","What is Router Outlet?"],
+["Mid","What is Router State?"],["Mid","What is Angular Universal?"],["Mid","What is Protractor?",["Testing"]],["Mid","What is Bazel?"],
+["Mid","What is Activated route?"],["Mid","What are the utility functions provided by RxJS?"],["Mid","Why would you use a spy in a test?",["Testing"]],
+["Mid","Explain the difference between Constructor and ngOnInit"],["Mid","Why Incremental DOM has low memory footprint?",["Performance"]],
+["Mid","Can you explain the difference between Promise and Observable in Angular?"],["Mid","What happens if you use <script> tag inside template?",["Security"]],
+["Mid","What is AOT?"],["Mid","What is Redux and how does it relate to an Angular app?"],["Mid","Why should ngOnInit be used, if we already have a constructor?"],
+["Mid","When would you use eager module loading?"],["Mid","How to inject base href?"],["Mid","How do you perform error handling in Observables?"],
+["Mid","What are the ways to control AOT compilation?"],["Mid","Explain Lazy Loading in Angular?",["Performance"]],["Mid","What is the purpose of Wildcard route?"],
+["Mid","What is TestBed?",["Testing"]],["Mid","Explain how Custom Elements works internally?"],["Mid","What are Custom elements?"],
+["Mid","What are dynamic components?"],["Mid","What is the option to choose between Inline and External template file?"],["Mid","What is Multicasting?"],
+["Mid","How do you perform Error Handling for HttpClient?"],["Mid","What is a Parameterized pipe?"],["Mid","Do I always need a Routing Module?"],
+["Mid","What is difference between declarations, providers and import in NgModule?"],["Mid","What is the use of Codelyzer?"],
+["Mid","What is the difference between promise and observable?"],["Mid","What is Angular Ivy?"],["Mid","How do you categorize data binding types?"],
+["Mid","What's new in Angular 6 and why shall we upgrade to it?"],["Senior","What does detectChanges do in Angular Jasmine tests?",["Testing"]],
+["Senior","Do I need to bootstrap custom elements?"],["Senior","What are the mapping rules between Angular component and custom element?"],
+["Senior","Angular 9: What are some new features in Angular 9?"],["Senior","When does a lazy loaded module is loaded?"],["Senior","What is ngUpgrade?"],
+["Senior","What does a just-in-time (JIT) compiler do?"],["Senior","Why would you use lazy loading modules in Angular app?",["Performance"]],
+["Senior","What is difference between Incremental DOM and Virtual DOM?",["React"]],["Senior","Why would you use renderer methods instead of native element methods?"],
+["Senior","How do you create application to use scss?"],["Senior","Why do we need compilation process in Angular?"],
+["Senior","Explain the purpose of Service Workers in Angular"],["Senior","What is the need for SystemJS in Angular?"],
+["Senior","What is Reactive Programming and how does it relate to Angular?"],["Senior","Pros/cons of using local storage to replace cookie functionality?"],
+["Senior","What is Ivy Renderer?"],["Senior","What are the lifecycle hooks for components and directives?"],["Senior","Name and explain some Angular Module Loading examples"],
+["Senior","What would be a good use for NgZone service?"],["Senior","What is the difference between pure and impure pipe?"],
+["Senior","How would you insert an embedded view from a prepared TemplateRef?"],["Senior","What is Incremental DOM? How is it different from Virtual DOM?"],
+["Senior","How to detect a route change in Angular?"],["Senior","Name some security best practices in Angular",["Security"]],
+["Senior","What are the advantages with AOT?"],["Senior","Why we should use Bazel for Angular builds?"],["Senior","What is Zone in Angular?"],
+["Expert","Name some differences between SystemJS vs webpack?"],["Expert","When to use query parameters versus matrix parameters in Url?"],
+["Expert","How would you extract webpack config from angular cli project?"],["Expert","How does Ivy affect the (Re)build time?"],
+["Expert","What are observable creation functions?"],["Expert","Angular 8: What are some changes in Location module?"],
+["Expert","Angular 9: Explain improvements in Tree-Shaking"],["Expert","Could you provide some particular examples of using ngZone?"],
+["Expert","Do you know how you can run AngularJS and Angular side by side?"],["Expert","What is Locality principle for Ivy?"],
+["Expert","Why did the Google team go with incremental DOM instead of virtual DOM?"],["Expert","JIT vs AOT compilation. Explain the difference."],
+["Expert","Why Angular uses Url segment?"],["Expert","What is the difference between BehaviorSubject vs Observable?"],
+["Expert","Why Incremental DOM is Tree Shakable?"],["Expert","How Would You Compare View Engine vs Ivy?"],
+["Expert","Is there no equivalent to $scope.emit() or $scope.broadcast() in Angular?"],["Entry","What are Pipes? Give me an example.",[],true],
+["Junior","How can I select an element in a component template?",[],true],["Junior","What does this line do?",[],true],
+["Mid","How to bundle an Angular app for production?",[],true],["Mid","How would you control size of an element on resize of the window?",[],true],
+["Senior","How to set headers for every request in Angular?",[],true],["Senior","Could I use jQuery with Angular?",[],true],
+["Expert","What is the Angular equivalent to an AngularJS $watch?",[],true]
+]},
+"ASP.NET MVC":{tags:["ASP.NET MVC","ASP.NET","Web"],q:[
+["Entry","What is ASP.NET MVC?"],["Entry","What is Layout in MVC?"],["Junior","What are the advantages of MVC over ASP.NET?"],
+["Junior","What is the use of ViewModel in MVC?"],["Junior","Explain Sections in MVC?"],["Junior","What are NonAction methods in MVC?"],
+["Junior","What are Scaffold templates in MVC?"],["Junior","What is Razor View Engine?"],["Junior","What you mean by Routing in MVC?"],
+["Junior","Explain Bundle.Config in MVC?"],["Junior","Can you explain Model, Controller and View in MVC?"],["Junior","What are Actions in MVC?"],
+["Junior","What is Razor Pages?"],["Mid","What is Attribute Routing in MVC?"],["Mid","Explain the difference between MVC vs ASP.NET Web API",["Web API"]],
+["Mid","What is PartialView in MVC?"],["Mid","Can a view be shared across multiple controllers?"],["Mid","What about MVC in .NET Core?",[".NET Core"]],
+["Mid","Can you explain the page life cycle of MVC?"],["Mid","Can you explain RenderBody and RenderPage in MVC?"],
+["Mid","In OOP, what is the difference between the Repository Pattern and a Service Layer?",["Design Patterns","Architecture"]],
+["Mid","Explain the methods used to render the views in MVC?"],["Mid","What is the HelperPage.IsAjax Property?"],
+["Mid","What is the difference between ViewBag and ViewData in MVC?"],["Mid","Advantages of using ASP.NET MVC vs Web Forms?"],
+["Mid","What is the difference between ViewResult() and ActionResult() in ASP.NET MVC?"],["Mid","Explain ASP.NET WebAPI vs MVC",["Web API"]],
+["Mid","What are HTML Helpers in MVC?"],["Senior","Describe Flux vs MVC?",["React"]],["Senior","What is the difference between ViewData and TempData?"],
+["Senior","Is it possible to create web application with both WebForms and MVC?"],["Senior","Explain Dependency Resolution in MVC?",["Dependency Injection"]],
+["Senior","What are AJAX Helpers in MVC?"],["Senior","Why to use Html.Partial in MVC?"],["Senior","What is Separation of Concerns in ASP.NET MVC?"],
+["Senior","What are Validation Annotations?"],["Senior","How route table has been created in ASP.NET MVC?"],
+["Expert","Difference between Html.Partial vs Html.RenderPartial & Html.Action vs Html.RenderAction?"]
+]},
+"ASP.NET Web API":{tags:["Web API","ASP.NET","REST"],q:[
+["Entry","What is ASP.NET Web API?"],["Junior","Which status code used for all uncaught exceptions by default?"],["Junior","Explain the usage of HttpResponseMessage?"],
+["Junior","What New Features are Introduced in ASP.NET Web API 2.0?"],["Junior","What are the Advantages of Using ASP.NET Web API?"],
+["Junior","What is the difference between ApiController and Controller?"],["Junior","What are main return types supported in Web API?"],
+["Junior","What exactly is OAuth (Open Authorization)?",["Security"]],
+["Mid","In OOP, what is the difference between the Repository Pattern and a Service Layer?",["Design Patterns","Architecture"]],
+["Mid","Compare WCF vs ASP.NET Web API?"],["Mid","Is it True that ASP.NET Web API has Replaced WCF?"],
+["Mid","Explain the difference between MVC vs ASP.NET Web API",["ASP.NET MVC"]],["Mid","Explain the difference between WCF RESTful Service vs ASP.NET Web API?"],
+["Mid","Name types of Action Results in Web API 2"],["Mid","What is Attribute Routing in ASP.NET Web API 2.0?"],
+["Mid","What are the differences between Web API and Web API 2?"],["Senior","Why are the FromBody and FromUri attributes needed in ASP.NET Web API?"],
+["Senior","What's the difference between OpenID and OAuth?",["Security"]],["Senior","Explain briefly CORS?",["Security"]],
+["Senior","What is ASP.NET Web API OData?"],["Senior","Can we use Web API with ASP.NET Web Form?"],["Senior","How to Return View from ASP.NET Web API Method?"],
+["Senior","What is Delegating Handler?"],["Senior","How to register exception filter globally?"],
+["Expert","Could you clarify what is the best practice with Web API error management?"],["Expert","HttpModule vs DelegatingHandler?"],
+["Expert","Why should I use IHttpActionResult instead of HttpResponseMessage?"],["Expert","Explain the difference between WCF, Web API, WCF REST and Web Service?",["REST"]],
+["Expert","Explain briefly OWIN Self Hosting?"],["Expert","What is difference between WCF and Web API and WCF REST and Web Service?"],
+["Mid","How to restrict access to Web API method to specific HTTP verb?",[],true],["Senior","How can we provide an alias name for ASP.NET Web API Action?",[],true]
+]},
+"ASP.NET Core":{tags:["ASP.NET Core","ASP.NET",".NET"],q:[
+["Entry","What is ViewData?"],["Junior","What is the difference between ASP.NET and ASP.NET MVC?",["ASP.NET MVC"]],
+["Junior","What is Generic Host in .NET Core?",[".NET Core"]],["Junior","Talk about Logging in ASP.NET Core?"],["Junior","What is ASP.NET Core?"],
+["Junior","Can ASP.NET Core work with the .NET framework?"],["Junior","What is ViewState?"],["Junior","Explain startup process in ASP.NET Core?"],
+["Junior","What exactly is an application pool? What is its purpose?"],["Junior","What is a postback?"],["Mid","Explain Middleware in ASP.NET Core?"],
+["Mid","Explain the use of BackgroundService class in Asp.Net Core?",[".NET Core"]],["Mid","Correct pattern to implement long running background work in Asp.Net Core?",[".NET Core"]],
+["Mid","In OOP, what is the difference between the Repository Pattern and a Service Layer?",["Design Patterns","Architecture"]],
+["Mid","What are some benefits of using Options Pattern in ASP.NET Core?",[".NET Core"]],
+["Mid","How can you create your own Scope for a Scoped object in .NET?",[".NET Core","Dependency Injection"]],
+["Mid","What is ViewState? How is it encoded? Is it encrypted?"],["Mid","List the events in ASP.NET page life cycle"],
+["Mid","Explain usage of Dependency Injection in ASP.NET Core",["Dependency Injection"]],["Mid","Where the viewstate is stored after the page postback?"],
+["Mid","What are the different validators in ASP.NET?"],["Mid","What exactly is the difference between .NET Core and ASP.NET Core?",[".NET Core"]],
+["Mid","What are the different types of caching?",["Caching"]],["Mid","In which event of page cycle is the ViewState available?"],
+["Mid","What is the difference between Server.Transfer and Response.Redirect?"],["Mid","What are the sub types of ActionResult?"],
+["Mid","What is the meaning of Unobtrusive JavaScript?"],["Mid","How can we prevent browser from caching an ASPX page?",["Caching"]],
+["Mid","What is new in ASP.NET Core 2, compared to ASP.NET Core 1?"],["Mid","Explain JSON Binding?"],
+["Senior","What is the difference between Hosted Services vs Windows Services?",[".NET Core"]],["Senior","What is the difference between Hosted Services vs WebJobs?"],
+["Senior","What is the difference between IHost vs IHostBuilder vs IHostedService?",[".NET Core"]],["Senior","Difference between classic and integrated pipeline mode in IIS7?"],
+["Senior","What is the difference between <system.web> and <system.webServer>?"],["Senior","What is an HttpHandler in ASP.NET?"],
+["Senior","When using DI in Controller shall I call IDisposable on any injected service?",[".NET Core","Dependency Injection"]],
+["Senior","Difference between ASP.NET Core Web (.NET Core) vs ASP.NET Core Web (.NET Framework)?"],["Senior","How we can force all the validation controls to run?"],
+["Senior","When to use Transient vs Scoped vs Singleton DI service lifetimes?",[".NET Core","Dependency Injection"]],
+["Senior","How to choose between ASP.NET 4.x and ASP.NET Core?"],["Senior","Is it possible to create web application with both WebForms and MVC?",["ASP.NET MVC"]],
+["Senior","What is the difference between web config and machine config?"],["Senior","What is Katana?"],["Senior","What is HttpModule in ASP.Net?"],
+["Senior","Which type of caching for portion of a page instead of whole page?",["Caching"]],["Senior","What are the different types of cookies in ASP.NET?"],
+["Senior","What are the different Session State management options available in ASP.NET?"],["Expert","What is the equivalent of WebForms in ASP.NET Core?"],
+["Expert","What exactly is OWIN and what problems does it solve?"],["Expert","Are static class instances unique to a request or a server in ASP.NET?"],
+["Expert","Explain some deployment considerations for Hosted Services",[".NET Core"]],["Expert","What is Cross Page Posting?"],
+["Expert","Name some ASP.NET WebForms disadvantages over MVC?"]
+]},
+"Azure Service Bus":{tags:["Azure Service Bus","Azure","Messaging"],q:[
+["Junior","Can Azure Service Bus message be empty?"],["Junior","When would you use Azure Storage Queues vs Azure Service Bus?",["Azure"]],
+["Junior","Difference between Receive and Peek in Azure Service Bus Topics?"],["Junior","Why would you use Scheduled messages in Azure Service Bus?"],
+["Mid","What are Transactions in Azure Service Bus?",["Transactions"]],["Mid","Is it possible to send a message directly to a Subscription queue?"],
+["Mid","Does Poison Queue exists in Azure Service Bus?"],["Mid","Explain the use case for At-most once delivery mode"],
+["Mid","Difference between At-most-once vs At-least-once message processing?",["Azure"]],
+["Mid","Difference between Azure Queue Storage and Azure Service Bus re dead letter queues?",["Azure"]],
+["Mid","Compare different message receiving modes in queuing technology"],["Mid","When would you use Azure Event Grid vs Azure Service Bus?",["Azure"]],
+["Mid","When would you use Azure Service Bus over Azure Event Grid?"],["Mid","Difference between Event vs Message Services in Azure?",["Azure"]],
+["Mid","Purpose of the dead-letter queue (DLQ) in Azure Service Bus?"],["Senior","Main considerations when creating Azure Service Bus queues/topics?",["Azure"]],
+["Senior","Explain the use of Express Entities in Azure Service Bus",["Azure"]],["Senior","Is Competing Consumers Pattern possible with ASB queues?"],
+["Senior","Best way to ensure exact-once delivery using Azure Services Bus?"],["Senior","Use case for At-least once message receiving mode?"],
+["Senior","Difference between Scheduled vs Deferred messages in ASB",["Azure"]],["Senior","Difference between ASB vs Event Hub vs Event Grid"],
+["Senior","Do messages in dead-letter queues in ASB expire?"],["Expert","Compare Message Sequencing vs Sessions in ASB"],
+["Expert","Explain how to abandon ASB message so it becomes visible again"]
+]},
+"Azure":{tags:["Azure","Cloud"],q:[
+["Junior","What is the difference between an Azure Tenant and Azure Subscription?"],["Junior","Difference between Azure API Apps, Logic Apps, Web Apps and Functions?"],
+["Junior","What is Azure CDN and why to use it?",["CDN"]],["Junior","Difference between Azure AD App Application vs Delegated Permissions?"],
+["Junior","What are ARM Templates in Azure?"],["Junior","What would you use: Azure CLI or PowerShell?"],
+["Junior","Rule of thumb for choosing ideal partitioning key in CosmosDB?"],["Junior","What is WebJob in Azure?"],
+["Junior","Is there a way to view deployed files in Azure?"],["Junior","When would you use Azure Storage Queues vs Azure Service Bus?",["Azure Service Bus"]],
+["Junior","What is RU in Cosmos DB?"],["Mid","Difference between Azure Queue Storage and ASB re dead letter queues?",["Azure Service Bus"]],
+["Mid","Difference between Event vs Message Services in Azure?",["Azure Service Bus"]],["Mid","Difference between Azure SQL Database and Azure SQL Managed Instance?",["SQL Server"]],
+["Mid","How to do a transaction with two collections on Azure CosmosDB?",["Transactions"]],["Mid","What is Azure Web PubSub Service?"],
+["Mid","What Is Azure Resource Manager?"],["Mid","How can I test my ARM template before deploying It?"],["Mid","What's Logical Partition in CosmosDB?"],
+["Mid","When would you use Azure Event Grid vs Azure Service Bus?",["Azure Service Bus"]],["Mid","Difference between Logical and Physical partitions in Cosmos DB?"],
+["Mid","Difference between At-most-once vs At-least-once processing in ASB?",["Azure Service Bus"]],["Mid","What does Cosmos DB automatically indexes the documents mean?"],
+["Mid","Pros and cons of using GUID as Partition Key in Cosmos DB"],["Mid","Can I reference NuGet packages in my C# Azure function?"],
+["Mid","What are Web Role, Worker Role and VM Role in Azure?"],["Mid","Difference between an API App and a Web App?"],
+["Mid","What are On Demand/Scheduled/Triggered WebJobs in Azure?"],["Mid","Differences between New and Classic Storage Accounts?"],
+["Mid","Many small Blob containers vs one large container?"],["Mid","How to choose between Azure Blob Storage vs Azure File Service?"],
+["Mid","Difference between an Azure Web App and an Azure Web Role?"],["Mid","When to choose Worker Role vs Web Jobs on Azure?"],
+["Mid","Explain the use of Claim Check Pattern in Azure Event Grid",["Design Patterns"]],["Mid","Compare Azure WebJobs vs Azure Function"],
+["Mid","When shall we use Azure Table Storage over Azure SQL?"],["Mid","Difference between Keys and Secrets in Azure Key Vault?",["Security"]],
+["Mid","How is Azure App Service different from Azure Functions?"],["Mid","Equivalent of a Windows Service on Azure?"],
+["Mid","What data schema shall you use for Event Grid events?"],["Senior","Main considerations when creating ASB queues/topics?",["Azure Service Bus"]],
+["Senior","Difference between Scheduled vs Deferred messages in ASB",["Azure Service Bus"]],["Senior","Explain use of Express Entities in ASB",["Azure Service Bus"]],
+["Senior","Why keep Azure Event Grid events as small as possible?"],["Senior","How would you get Azure Event Grid events in Angular/React client?"],
+["Senior","Pros and cons of Azure Web PubSub vs SignalR?"],["Senior","Explain use of Bounded Staleness consistency model in Cosmos DB"],
+["Senior","How would you design a multi-tenant architecture with Cosmos DB?"],["Senior","Compare ARM Templates vs Azure CLI"],
+["Senior","Difference between Azure AD and Azure AD Domain Services?"],["Senior","Advantages and disadvantages of Azure CDN",["CDN"]],
+["Senior","Cosmos DB vs Azure Table Storage vs Azure SQL: what to choose?"],["Senior","How to choose between Azure Table Storage vs MongoDB?"],
+["Senior","Difference between Block, Append and Page Blobs in Azure?"],["Senior","When should I use Azure SQL vs Azure Table Storage?"],
+["Senior","Difference between Enterprise Application and App Registration in Azure?"],["Expert","Explain Optimistic Concurrency Control in Cosmos DB",["Concurrency"]],
+["Expert","Why are Azure Resource Groups associated with a specific region?"],["Mid","How to define an Environment Variable on Azure using CLI?",[],true]
+]},
+"C#":{tags:["C#",".NET"],q:[
+["Entry","What are Property Accessors?"],["Entry","What is the difference between continue and break statements in C#?"],["Entry","What is C#?"],["Entry","What is an Object?",["OOP"]],
+["Junior","What are partial classes?"],["Junior","What is enum in C#?"],["Junior","Can multiple catch blocks be executed?"],["Junior","What is namespace in C#?"],
+["Junior","How is Exception Handling implemented in C#?"],["Junior","What is the difference between string and StringBuilder in C#?",["Performance"]],
+["Junior","What is Boxing and Unboxing?",[".NET Core","Memory Management"]],["Junior","What is LINQ in C#?",["LINQ"]],["Junior","What is Serialization?"],
+["Junior","What are dynamic type variables in C#?"],["Junior","What are the different types of classes in C#?"],["Junior","Difference between a Struct and a Class in C#?",["OOP"]],
+["Junior","In how many ways you can pass parameters to a method?"],["Junior","Can this be used within a Static method?"],["Junior","Why to use finally block in C#?"],
+["Junior","What are Nullable types in C#?"],["Junior","What is Managed or Unmanaged Code?",["Memory Management"]],["Junior","Difference between a class and a structure?",["OOP"]],
+["Junior","Value types vs Reference types in .NET?",[".NET Core","Memory Management"]],["Junior","What are Reference Types in C#?",["Memory Management"]],
+["Junior","What is an Abstract Class?",["OOP"]],["Junior","What are generics in C#?"],["Mid","When to use Record vs Class vs Struct in C#?"],
+["Mid","What is Record in C#?"],["Mid","What are the uses of using in C#"],["Mid","Explain the difference between Task and Thread in .NET",[".NET Core","Concurrency","Async/Await"]],
+["Mid","What is the use of the IDisposable interface?",[".NET Core","Memory Management"]],["Mid","Catch multiple exceptions at once without code duplication?",[".NET Core"]],
+["Mid","How encapsulation is implemented in C#?",["OOP"]],["Mid","Assignment vs shallow copy vs deep copy for a Record?"],["Mid","What is sealed Class in C#?",["OOP"]],
+["Mid","How can you prevent a class from overriding in C#?",["OOP"]],["Mid","Explain Code Compilation in C#"],["Mid","What is Extension Method in C#?"],
+["Mid","What is an anonymous function in C#?"],["Mid","Difference between constant and readonly?"],["Mid","What is Reflection in C#.Net?"],
+["Mid","Scope of a Internal member variable of a C# class?"],["Mid","Difference between overloading and overriding?",["OOP"]],
+["Mid","What is a Destructor in C# and when shall I create one?",["Memory Management"]],["Mid","Difference between Interface and Abstract Class?",["OOP"]],
+["Mid","Is there a difference between throw and throw ex?"],["Mid","Difference between ref and out keywords?"],["Mid","Explain Anonymous type in C#"],
+["Mid","Why can't you specify accessibility modifier for methods inside Interface?",["OOP"]],["Mid","Difference between dynamic type variables and object type variables?"],
+["Mid","Difference between Virtual method and Abstract method?",["OOP"]],["Mid","What is lambda expressions in C#?"],
+["Mid","Difference between == and Equals() Method in C#?"],["Mid","Use of Null Coalescing Operator (??) in C#?"],["Mid","What is Virtual Method in C#?",["OOP"]],
+["Senior","Difference between late binding and early binding in C#?"],["Senior","Difference between Func<string,string> and delegate?"],
+["Senior","Is operator overloading supported in C#?"],["Senior","Can Multiple Inheritance be implemented in C#?",["OOP"]],
+["Senior","What interface should your data structure implement to make Where work?",["LINQ"]],["Senior","What is a static constructor?",["OOP"]],
+["Senior","Use of conditional preprocessor directive in C#?"],["Senior","Explain what is Ternary Search?",["Algorithms / DSA"]],
+["Senior","How does Asynchronous tasks Async/Await work in .NET?",[".NET Core","Async/Await"]],["Senior","What happens when we Box or Unbox Nullable types?",["Memory Management"]],
+["Senior","Difference between Interface, abstract, sealed, static, partial class in C#?",["OOP"]],["Senior","How to solve Circular Reference?",["OOP","Memory Management"]],
+["Senior","Test if a Number belongs to the Fibonacci Series",["Algorithms / DSA"]],["Senior","When to use ArrayList over array[] in C#?",["Collections"]],
+["Senior","IEnumerable vs List - What to Use? How do they work?",["Collections","LINQ"]],["Senior","When would you use delegates in C#?"],
+["Senior","Different ways a method can be overloaded?",["OOP"]],["Senior","Best practice for best performance using Lazy objects?",["Performance"]],
+["Senior","Scope of a Protected Internal member variable of a C# class?"],["Senior","What is Indexer in C#?"],["Senior","Explain Short-Circuit Evaluation in C#"],
+["Senior","Can you create a function that accepts varying number of arguments?"],["Senior","What is Marshalling and why do we need it?"],
+["Senior","Difference between is and as operators in C#?"],["Senior","What are pointer types in C#?"],["Senior","What is the yield keyword used for in C#?"],
+["Senior","Difference between StackOverflowError and OutOfMemoryError?",["Memory Management"]],["Senior","Why to use lock statement in C#?",["Concurrency"]],
+["Senior","Explain the difference between Select and Where",["LINQ"]],["Senior","Difference between dispose and finalize methods in C#?",["Memory Management"]],
+["Senior","What is the Constructor Chaining in C#?",["OOP"]],["Senior","Difference between ApplicationException and SystemException class?"],
+["Expert","Why doesn't C# allow static methods to implement an interface?",["OOP"]],["Expert","Difference between destructor, dispose and finalize?",["Memory Management"]],
+["Expert","Difference between IQueryable, ICollection, IList & IDictionary?",["Collections","LINQ"]],["Expert","Can you add extension methods to an existing static class?"],
+["Expert","Difference between Lambdas and Delegates?"],["Expert","What is a preprocessor directives in C#?"],
+["Expert","When should we use abstract classes instead of interfaces with extension methods?",["OOP"]],["Expert","What is the method MemberwiseClone() doing?"],
+["Expert","Implement the Where method in C#. Explain.",["LINQ"]],["Expert","Explain when to use Finalize vs Dispose?",[".NET Core","Memory Management"]],
+["Expert","What is the volatile keyword used for?",["Concurrency"]],["Expert","What are Circular References in C#?",["Memory Management"]],
+["Expert","Explain the difference between Func vs Action vs Predicate?"],["Expert","Destructor defined but never executed. Why?",["OOP"]],
+["Expert","List some different ways for equality check in .NET"],["Expert","What is Multicast Delegate in C#?"],["Expert","What is the use of static constructors?"],
+["Expert","What is jagged array in C# and when to prefer over multi-dimensional?",["Collections"]],["Expert","Differences between IEnumerable and IQueryable?",["LINQ"]],
+["Expert","Benefits of a Deferred Execution in LINQ?",["LINQ"]],["Expert","Why Abstract class can not be sealed or static?",["OOP"]],
+["Expert","Explain what is Weak Reference in C#?",["Memory Management"]],["Expert","Difference between Array.CopyTo() and Array.Clone()?"],
+["Expert","What is deep or shallow copy concept in C#?"],["Junior","Implement a Queue using two Stacks",["Algorithms / DSA","Collections"],true],
+["Junior","Filter out the first 3 even numbers from the list using LINQ",["LINQ"],true],["Mid","Iterative Pre-order Traversal of a Binary Tree without Recursion?",["Algorithms / DSA"],true],
+["Mid","Can you return multiple values from a function in C#?",[],true],["Mid","What is the output of the program below? Explain.",[],true],
+["Mid","Given an array of ints, total all values that are even numbers.",[],true],["Mid","Explain how does the Sentinel Search work?",["Algorithms / DSA"],true],
+["Mid","Refactor the code",[],true],["Mid","Reverse the ordering of words in a String",["Algorithms / DSA"],true],
+["Mid","How to check if two Strings are Anagrams?",["Algorithms / DSA"],true],["Senior","Is the comparison of time and null valid?",[],true],
+["Senior","What is the output of the program below?",[],true],["Senior","Binet's formula: Fibonacci without Recursion or Iteration?",["Algorithms / DSA"],true],
+["Senior","Find Merge (Intersection) Point of Two Linked Lists",["Algorithms / DSA"],true],["Senior","Is relying on && short-circuiting safe in .NET?",[],true],
+["Senior","Explain what is Fibonacci Search technique?",["Algorithms / DSA"],true],["Senior","What is the output of the short program below?",[],true],
+["Senior","What is the output of the program below? Explain your answer.",[],true],["Expert","Calculate the circumference of the circle",[],true]
+]},
+"Dependency Injection":{tags:["Dependency Injection","Architecture","SOLID"],q:[
+["Junior","What is Dependency Injection?",["Design Patterns"]],["Junior","What is IoC (DI) Container?",[".NET Core"]],
+["Mid","Why do I need an IoC container as opposed to straightforward DI code?"],["Mid","What is Inversion of Control?"],
+["Mid","What exactly is IoC and DI? How are they related?"],["Mid","Explain the IoC (DI) Container service lifetimes?",[".NET Core"]],
+["Mid","What are some advantages of using Dependency Injection",["Design Patterns"]],
+["Mid","How can you create your own Scope for a Scoped object in .NET?",[".NET Core","ASP.NET Core"]],
+["Senior","Do I need Dependency Injection in Node.js?"],["Senior","What is the Dependency Inversion Principle (DIP)?",["Architecture","SOLID"]],
+["Senior","What are some disadvantages of Dependency Injection?",["Design Patterns"]],
+["Senior","When using DI in Controller shall I call IDisposable on any injected service?",[".NET Core","ASP.NET Core"]],
+["Senior","When to use Transient vs Scoped vs Singleton DI service lifetimes?",[".NET Core","ASP.NET Core"]],
+["Senior","What are some best practices for implementing services for DI?"],["Senior","Explain what is Object Lifetime Management when using DI?",["Memory Management"]],
+["Expert","How to Dispose resources with Dependency Injection?",["Memory Management"]],["Expert","Difference between DI and Service Locator patterns?",["Design Patterns"]]
+]},
+"Design Patterns":{tags:["Design Patterns","OOP","Architecture"],q:[
+["Entry","What are the main categories of Design Patterns?"],["Entry","What is Design Patterns and why anyone should use them?"],["Entry","What is Singleton pattern?"],["Entry","What is a pattern?"],
+["Junior","Why would you want to use a Repository Pattern with an ORM?"],["Junior","What are some benefits of Repository Pattern?"],["Junior","Name types of Design Patterns?"],
+["Junior","What is Null Object pattern?"],["Junior","What is Dependency Injection?",["Dependency Injection"]],["Junior","What is Proxy pattern?"],["Junior","What is Inversion of Control?"],
+["Junior","What is Iterator pattern?"],["Junior","What is State pattern?"],["Junior","What is Template pattern?"],["Junior","What is Filter pattern?"],["Junior","What is Builder pattern?"],
+["Junior","What is Strategy pattern?"],["Junior","Can we create a clone of a singleton object?"],["Junior","What is Factory pattern?"],
+["Mid","Is Unit Of Work equals Transaction?",["Architecture","Transactions"]],["Mid","What is Decorator pattern?"],["Mid","What is Memento pattern?"],
+["Mid","What is Unit Of Work?",["ADO.NET","OOP"]],["Mid","What is Mediator pattern?"],["Mid","What are some reasons to use Repository Pattern?"],
+["Mid","What is an Aggregate Root in the context of Repository Pattern?"],["Mid","Difference between Proxy and Decorator?"],["Mid","When should I use Active Record vs Repository Pattern?"],
+["Mid","What are the drawbacks to the ActiveRecord pattern?"],["Mid","Repository Pattern and a Service Layer difference?",["ASP.NET Core","Architecture"]],
+["Mid","Advantages of using Dependency Injection",["Dependency Injection"]],["Mid","What is the CQRS Pattern?",["DDD","Architecture"]],
+["Mid","Name some benefits of CQRS Pattern",["DDD","Architecture"]],["Mid","Describe the Event Sourcing Pattern",["DDD","Architecture"]],
+["Mid","Explain use of Claim Check Pattern in Azure Event Grid",["Azure"]],["Mid","Difference between a Static class and a Singleton class?"],
+["Mid","What is Adapter Pattern?"],["Mid","What does program to interfaces, not implementations mean?",["Architecture"]],["Mid","What is Prototype pattern?"],
+["Mid","What is Interpreter pattern?"],["Mid","What is Command pattern?"],["Mid","What is Facade pattern?"],["Mid","What is the Chain of Responsibility pattern?"],
+["Mid","What is Abstract Factory pattern?"],["Mid","When should I use Composite design pattern?"],["Mid","What is Observer pattern?"],["Mid","What is Bridge pattern?"],
+["Senior","Explain usage of Service Locator Pattern"],["Senior","Disadvantages of Dependency Injection?",["Dependency Injection"]],
+["Senior","Difference between Strategy and State design pattern?"],["Senior","Relationship between Repository and Unit of Work?",["Architecture","Entity Framework"]],
+["Senior","What is Flyweight pattern?"],["Senior","Explain Composition over Inheritance?",["OOP"]],
+["Senior","Why shouldn't I use Repository Pattern with Entity Framework?",[".NET Core","Entity Framework"]],["Senior","How is Bridge pattern different from Adapter?"],
+["Senior","How should I group my Repositories when using Repository Pattern?",["Architecture"]],["Senior","Is Repository Pattern same as Active Record Pattern?",["Architecture"]],
+["Senior","Repository Pattern or smart business objects?",["Architecture"]],["Senior","Benefits of Repository Pattern?",["ADO.NET","OOP"]],
+["Senior","Why would I ever use Chain of Responsibility over Decorator?"],["Senior","When would you use Builder over Factory Pattern?"],
+["Expert","Difference between DI and Service Locator patterns?",["Dependency Injection"]],["Expert","Difference between Template and Strategy pattern?"],
+["Expert","Difference between Facade, Proxy, Adapter and Decorator patterns?"],["Expert","Difference between Façade vs Mediator?"],
+["Expert","Can we use CQRS without Event Sourcing?",["DDD","Architecture"]],["Expert","Explain the Deadly Diamond of Death?",["OOP"]],
+["Mid","How should I add an object into a collection maintained by Aggregate Root?",[],true]
+]},
+"Entity Framework":{tags:["Entity Framework","EF Core","Data Access"],q:[
+["Entry","What is Entity Framework?"],["Entry","What are the benefits of using EF?"],["Junior","Scenarios where Entity Framework is applicable?"],
+["Junior","What is pluralize and singularize in the Entity Framework?"],["Junior","Code First vs Model First Approach in Entity Framework?"],
+["Junior","What is Code First approach in Entity Framework?"],["Junior","What is the purpose of a DBContext class?"],["Junior","What is Conceptual Model?"],
+["Junior","What is migration in Entity Framework?"],["Junior","What is Mapping?"],["Junior","What is Storage Model?"],["Junior","What are scalar and navigation properties in EF?"],
+["Mid","What are complex types in Entity Framework?"],["Mid","Difference between Optimistic vs Pessimistic locking?",["Concurrency","Transactions"]],
+["Mid","What is the importance of EDMX file in Entity Framework?"],["Mid","What are POCO classes in Entity Framework?"],
+["Mid","Different approaches supported to create Entity Model?"],["Mid","Can you explain Lazy Loading in a detailed manner?",["Performance"]],
+["Mid","What is EF Data Access Architecture?"],["Mid","Advantages and disadvantages of Database First Approach?"],["Mid","Components of Entity Framework Architecture?"],
+["Mid","Advantages of Model First Approach?"],["Mid","How you can load related entities in EF?"],["Mid","What is Eager Loading?",["Performance"]],
+["Mid","What is the role of Entity Client Data Provider?"],["Mid","How can we handle concurrency in Entity Framework?",["Concurrency"]],
+["Mid","Explain Lazy Loading, Eager Loading, and Explicit Loading?",["Performance"]],["Mid","Advantages/disadvantages of Code First Approach?"],
+["Mid","What is Optimistic Locking?",["Concurrency"]],["Senior","Difference between LINQ to SQL and Entity Framework?",["LINQ"]],
+["Senior","Disadvantages of using static DbContext?"],["Senior","Which type of loading is good in which scenario?",["Performance"]],
+["Senior","When would you use EF6 vs EF Core?",["EF Core"]],["Senior","Differences between Express vs Recoverable messages"],
+["Senior","Is DbContext thread safe?",["Concurrency"]],["Senior","Why shouldn't I use Repository Pattern with EF?",[".NET Core","Design Patterns"]],
+["Senior","What are T4 templates?"],["Senior","Relationship between Repository and Unit of Work?",["Design Patterns","Architecture"]],
+["Senior","Could you explain Pessimistic locking?",["Concurrency"]],["Senior","Explain CSDL, SSDL and MSL sections in EDMX file?"],
+["Senior","Types of system generated messages?"],["Senior","How can you enhance performance of Entity Framework?",["Performance"]],
+["Senior","What is faster - ADO.NET or EF?",["ADO.NET","Performance"]],["Senior","Difference between POCO, Code First, and simple EF approach?"],
+["Senior","Difference between ObjectContext and DbContext?"],["Senior","Difference between Code First, Model First and Database First?"],
+["Expert","What difference does .AsNoTracking() make?",["Performance"]],["Expert","Advantages/disadvantages of a Global Entities Context?"],
+["Expert","What is client wins and store wins mode in EF concurrency?",["Concurrency"]],["Expert","Difference between Automatic vs Code-base Migration?"],
+["Expert","When would you use SaveChanges(false) + AcceptAllChanges()?",["Transactions"]],["Expert","Difference between SaveChanges() and AcceptAllChanges()?"],
+["Expert","Can I use Entity Framework 6 in .Net Core?",[".NET Core"]],["Expert","How can we do pessimistic locking in Entity Framework?",["Concurrency"]],
+["Junior","Different ways of creating domain/entity objects?",[],true],["Mid","How do I delete multiple rows in EF (without foreach)?",[],true],
+["Expert","How do I view the SQL generated by the Entity Framework?",[],true]
+]},
+"LINQ":{tags:["LINQ","C#",".NET"],q:[
+["Entry","Explain what is LINQ? Why is it required?"],["Entry","What are the types of LINQ?"],["Junior","What are Anonymous Types?"],
+["Junior","What is the role of DataContext classes in LINQ?"],["Junior","What are Extension Methods?"],["Junior","Why SELECT clause comes after FROM clause in LINQ?"],
+["Junior","Explain what is LINQ to Objects?"],["Junior","Purpose of LINQ providers in LINQ?"],["Junior","How LINQ is useful than Stored Procedures?"],
+["Junior","How to find index of element using where() with Lambda?"],["Junior","What is Anonymous function?"],["Junior","Three main components of LINQ?"],
+["Junior","What is LINQ in C#?",["C#"]],["Mid","Difference between First() and Take(1)?"],["Mid","What are LINQ compiled queries?",["Performance"]],
+["Mid","Explain what is Lambda Expressions in LINQ?"],["Mid","What is Expression Trees and how used in LINQ?"],
+["Mid","Compare EF vs LINQ to SQL vs ADO.NET with stored procedures?",["Entity Framework","ADO.NET"]],
+["Mid","EF vs LINQ to SQL as ORM: difference?",["Entity Framework"]],["Mid","Difference between deferred execution and Lazy evaluation?"],
+["Mid","Define what is let clause?"],["Mid","How standard query operators useful in LINQ?"],["Mid","When to use First() vs FirstOrDefault()?"],
+["Mid","Difference between Skip() and SkipWhile()?"],["Senior","Explain the difference between Select and Where",["C#"]],
+["Senior","Advantages of LINQ over Stored Procedures"],["Senior","When should I use a CompiledQuery?",["Performance"]],
+["Senior","Equivalent to let keyword in chained LINQ method calls?"],["Expert","Distinction between anonymous method and lambda expressions?"],
+["Expert","Difference between returning IQueryable<T> vs IEnumerable<T>?",["Performance"]],["Expert","Benefits of a Deferred Execution in LINQ?",["C#"]],
+["Expert","Why use AsEnumerable() rather than casting to IEnumerable<T>?"],["Expert","Difference between Select and SelectMany?"],
+["Expert","Disadvantages of LINQ over Stored Procedures"],["Junior","Filter out first 3 even numbers using LINQ",["C#"],true],
+["Mid","Using LINQ to remove elements from a List<T>",[],true],["Mid","Get indexes of top n items where item value = true",[],true]
+]},
+".NET Core":{tags:[".NET Core",".NET","CLR"],q:[
+["Entry","What is the .NET Framework?"],["Entry","What is .NET Core?"],["Entry","What is .NET Standard?"],["Entry","Difference between String and string in C#?",["C#"]],
+["Junior","What is Boxing and Unboxing?",["C#","Memory Management"]],["Junior","What is Generic Host in .NET Core?",["ASP.NET Core"]],
+["Junior","What is IoC (DI) Container?",["Dependency Injection"]],["Junior","What is CLR?",["GC / CLR"]],["Junior","What is an unmanaged resource in .NET?",["Memory Management"]],
+["Junior","What is a .NET application domain?"],["Junior","What is CTS?"],["Junior","What is .NET Standard and why consider it?"],["Junior","What is MSIL?"],
+["Junior","Name some CLR services?",["GC / CLR"]],["Junior","Difference between SDK and Runtime in .NET Core?"],["Junior","Characteristics of .NET Core?"],
+["Junior","Value types vs Reference types in .NET?",["C#","Memory Management"]],["Junior","Difference between decimal, float and double in .NET?"],
+["Junior","Difference between .NET Core and Mono?"],["Mid","Create your own Scope for a Scoped object in .NET?",["ASP.NET Core","Dependency Injection"]],
+["Mid","Difference between .NET Standard and PCL?"],["Mid","Two types of deployment for .NET Core applications"],["Mid","What officially replaces WCF in .Net Core?"],
+["Mid","What is Explicit Compilation?"],["Mid","Benefits of Explicit Compilation (AOT)?",["Performance"]],["Mid","Benefits of Options Pattern in ASP.NET Core?",["ASP.NET Core"]],
+["Mid","Difference between Class Library (.NET Standard) and (.NET Core)?"],["Mid","What's is BCL?"],["Mid","What is JIT compiler?",["GC / CLR"]],
+["Mid","When to use .NET Core vs .NET Standard Class Library?"],["Mid","IoC Container service lifetimes?",["Dependency Injection"]],["Mid","What is FCL?"],
+["Mid","What about MVC in .NET Core?",["ASP.NET MVC"]],["Mid","What does CLS mean?"],["Mid","Difference between .NET Core and .NET Framework?"],
+["Mid","Difference between .NET Core, .NET Framework, and Xamarin?"],["Mid","What is Kestrel?",["ASP.NET Core"]],
+["Mid","Catch multiple exceptions at once without duplication?",["C#"]],["Mid","Use of the IDisposable interface?",["C#","Memory Management"]],
+["Mid","Use of BackgroundService class in Asp.Net Core?",["ASP.NET Core"]],["Mid","Pattern to implement long running background work?",["ASP.NET Core"]],
+["Mid","Difference between Task and Thread in .NET",["C#","Concurrency"]],["Mid","Difference between Managed and Unmanaged code?",["Memory Management"]],
+["Mid","What is included in .NET Core?"],["Mid","What is CoreCLR?",["GC / CLR"]],["Senior","What's the difference between gRPC and WCF?"],
+["Senior","Explain different types of Inheritance",["OOP"]],["Senior","DI in Controller: shall I call IDisposable?",["ASP.NET Core","Dependency Injection"]],
+["Senior","Difference between IHost vs IHostBuilder vs IHostedService?",["ASP.NET Core"]],["Senior","Hosted Services vs Windows Services?",["ASP.NET Core"]],
+["Senior","When to use Transient vs Scoped vs Singleton lifetimes?",["ASP.NET Core","Dependency Injection"]],
+["Senior","Why shouldn't I use Repository Pattern with EF?",["Design Patterns","Entity Framework"]],["Senior","How to choose target version of .NET Standard library?"],
+["Senior","Does .NET support Multiple Inheritance?",["OOP"]],["Senior","Explain Implicit Compilation process"],
+["Senior","Difference between .NET Framework/Core and .NET Standard Class Library?"],["Senior","Benefits of using JIT?",["Performance"]],
+["Senior","Why does .NET use JIT instead of compiling once?",["GC / CLR"]],["Senior","How does Async/Await work in .NET?",["C#","Async/Await"]],
+["Senior","Why does .NET Standard library exist?"],["Senior","Difference between CIL and MSIL (IL)?"],["Senior","Difference between RyuJIT and Roslyn?"],
+["Senior","Difference between AppDomain, Assembly, Process and a Thread?",["Concurrency"]],["Expert","Difference between .Net Core, Portable, Standard, Compact, UWP, PCL?"],
+["Expert","Difference between Node.js async model and async/await in .NET?",["Async/Await"]],["Expert","Explain when to use Finalize vs Dispose?",["C#","Memory Management"]],
+["Expert","Deployment considerations for Hosted Services",["ASP.NET Core"]],["Expert","How many types of JIT Compilations do you know?",["GC / CLR"]]
+]},
+"OOP":{tags:["OOP","C#","Design Patterns"],q:[
+["Entry","What is Inheritance?"],["Entry","What is Object-Oriented Programming (OOP)?"],["Junior","Difference between a class and a structure?",["C#"]],
+["Junior","Why is the virtual keyword used in code?"],["Junior","Can you inherit private members of a class?"],["Junior","Explain the concept of Constructor"],
+["Junior","Difference between procedural and object-oriented programming?"],["Junior","What is Encapsulation?"],["Junior","What is Polymorphism?"],
+["Junior","What is an object?"],["Junior","What is a class?"],["Junior","Relationship between a class and an object?"],["Junior","Explain the basic features of OOPs"],
+["Mid","Can you specify accessibility modifier for methods inside interface?"],["Mid","Can a class inherit the constructor of its base class?"],
+["Mid","How could you define Abstraction in OOP?"],["Mid","State the features of an Interface"],["Mid","What do you mean by Data Encapsulation?"],
+["Mid","Similarities between a class and a structure?"],["Mid","Interface or an Abstract class: which one to use?"],["Mid","Method overriding vs overloading?"],
+["Mid","What is Unit Of Work?",["ADO.NET","Design Patterns"]],["Mid","Different ways a method can be Overloaded?"],["Mid","Difference between method and function in OOP?"],
+["Mid","How can you prevent your class to be inherited further?"],["Mid","Difference between Virtual method and Abstract method?",["C#"]],
+["Mid","Difference between Interface and Abstract Class?",["C#"]],["Mid","What is Polymorphism, what is it for, and how is it used?"],
+["Mid","What are abstract classes? Distinct characteristics?"],["Mid","Prevent a class from overriding in C#?",["C#"]],["Mid","When to use a struct instead of a class?"],
+["Senior","Explain the concept of Destructor",["Memory Management"]],["Senior","How to solve Circular Reference?",["C#","Memory Management"]],
+["Senior","Benefits of Repository Pattern?",["ADO.NET","Design Patterns"]],["Senior","What is Coupling in OOP?",["Architecture"]],
+["Senior","Difference between an Interface and abstract class?"],["Senior","Explain different types of Inheritance",[".NET Core"]],
+["Senior","Advantage of getters and setters vs public fields?"],["Senior","Differentiate between an abstract class and an interface"],
+["Senior","What is a static constructor?",["C#"]],["Senior","Difference between abstract function and virtual function?"],
+["Senior","Difference between Cohesion and Coupling?",["Architecture"]],["Senior","When to use Interface vs Base Class?"],["Senior","What is Cohesion in OOP?",["Architecture"]],
+["Senior","Can you declare overridden method static if original is not static?"],["Senior","Does .NET support Multiple Inheritance?",[".NET Core"]],
+["Expert","Why prefer Composition over Inheritance?"],["Expert","Polymorphism vs Overriding vs Overloading?"],["Expert","What is LSP (Liskov Substitution Principle)?",["SOLID"]],
+["Expert","Destructor defined but never executed. Why?",["C#"]],["Expert","Can you declare a private class in a namespace?"],
+["Expert","What is a monad (OOP terms)?"],["Expert","Difference between Association, Aggregation and Composition?"],["Expert","Difference between a Mixin and Inheritance?"],
+["Expert","What does it mean to Program to an Interface?"],["Expert","Methods vs functions in OOP context?"],["Expert","Why doesn't C# allow static methods to implement interface?",["C#"]]
+]},
+"Redis":{tags:["Redis","Caching","NoSQL"],q:[
+["Entry","What is Redis?"],["Junior","Is Redis just a cache?",["Caching"]],["Junior","Does Redis persist data?"],
+["Mid","Difference between Redis replication and sharding?"],["Mid","How does Redis handle multiple threads updating same data?",["Concurrency"]],
+["Mid","Does Redis support transactions?",["Transactions"]],["Mid","When to use Redis Sets?"],["Mid","When to use Redis over MongoDB?"],
+["Mid","When to use Redis Lists data type?"],["Mid","How are Redis pipelining and transaction different?"],["Mid","Advantage of Redis vs using memory?"],
+["Senior","CPU bound and I/O bound in context of Redis?"],["Senior","What is AOF persistence in Redis?"],["Senior","How can I exploit multiple CPU/cores for Redis?"],
+["Senior","When to use Redis Hashes data type?"],["Senior","Why Redis does not support roll backs?"],["Senior","What is Pipelining in Redis?"],
+["Senior","How to check if a key already exists in a Redis list?"],["Senior","When to use Redis or MongoDB?"],["Senior","Use case for Sorted Set in Redis"],
+["Senior","How would you efficiently store JSON in Redis?"],["Expert","How much faster is Redis than MongoDB?"],["Expert","Underlying data structures for Redis?"],
+["Expert","RDB and AOF, which one should I use?"],["Expert","Is Redis a durable datastore?"],["Expert","What happens if Redis runs out of memory?"]
+]},
+"SQL Server":{tags:["SQL Server","SQL","Databases"],q:[
+["Entry","Define a Temp Table"],["Entry","What is PRIMARY KEY?"],["Entry","What is a VIEW?"],["Junior","What is Normalisation?"],
+["Junior","Difference between DDL and DML?"],["Junior","Difference between TRUNCATE and DELETE?"],["Junior","What is DEFAULT?"],["Junior","What is FOREIGN KEY?"],
+["Mid","Difference between INNER, OUTER, FULL OUTER JOIN?"],["Mid","Difference between UNION and UNION ALL?"],["Mid","Difference between truncate and delete"],
+["Mid","What is Denormalization?"],["Mid","Difference between Primary Key and Unique Key?"],["Mid","Difference between Clustered and Non-clustered index?",["Performance"]],
+["Mid","How does a Hash index work?"],["Mid","How a database index can help performance?",["Performance"]],["Mid","Difference between WHERE and HAVING clause?"],
+["Mid","Difference between JOIN and UNION?"],["Mid","What is Collation?"],["Mid","Difference between INNER JOIN and OUTER JOIN?"],
+["Mid","How can VIEW provide security layer?",["Security"]],["Mid","INNER JOIN ON vs WHERE clause?"],["Mid","Define ACID Properties",["Transactions"]],
+["Mid","Difference between Azure SQL Database and Managed Instance?",["Azure"]],["Senior","Cost of having a database index?",["Performance"]],
+["Senior","Faster: one big query or many small queries?",["Performance"]],["Senior","Difference among UNION, MINUS and INTERSECT?"],
+["Senior","Difference between Exclusive Lock and Update Lock",["Concurrency"]],["Senior","How does B-trees Index work?"],
+["Expert","Name some disadvantages of a Hash index"],["Expert","Other types of Indexes (vs B-Trees)?"],["Expert","How does database Indexing work?",["Performance"]],
+["Expert","What is Optimistic Locking and Pessimistic Locking?",["Concurrency"]],["Expert","Difference between B-Tree, R-Tree and Hash indexing?"],
+["Expert","What is Index Cardinality and why does it matter?"],["Mid","How to select first 5 records from a table?",[],true],
+["Mid","Find duplicate values in a SQL table",[],true],["Senior","What would happen without an Index?",[],true],
+["Senior","Delete duplicate values in a SQL table",[],true],["Senior","How to transpose a table using SQL?",[],true],
+["Senior","How to generate row number in SQL without ROWNUM",[],true],["Senior","How do TRUNCATE and DELETE effect Identity?",[],true],
+["Senior","How to do an UPDATE with JOIN in SQL?",[],true],["Expert","Select first row in each GROUP BY group?",[],true]
+]},
+"TypeScript":{tags:["TypeScript","Frontend","JavaScript"],q:[
+["Entry","Difference between .ts and .tsx extensions?"],["Entry","List the built-in types in Typescript"],["Entry","How to call base class constructor from child class?"],
+["Entry","Do we need to compile TypeScript files and why?"],["Entry","What is TypeScript and why do we need it?"],["Entry","What is TypeScript and why one should use it?"],
+["Entry","How to perform string interpolation in TypeScript?"],["Entry","What are Modules in Typescript?"],["Entry","Why use TypeScript in place of JavaScript?"],
+["Entry","Explain generics in TypeScript"],["Entry","What are the benefits of TypeScript?"],["Junior","Difference between String and string in TypeScript?"],
+["Junior","What is Type Erasure in TypeScript?"],["Junior","How to check null and undefined in TypeScript?"],["Junior","Which access modifiers are implied when not specified?"],
+["Junior","Which OO terms are supported by TypeScript?",["OOP"]],["Junior","Difference between Typescript and JavaScript?"],["Junior","What is a TypeScript Map file?"],
+["Junior","Could we use TypeScript on backend?"],["Junior","What are assertion functions?"],["Junior","Purpose of Nullish Coalescing operator?"],
+["Junior","How to create an enum with string values?"],["Junior","What does the pipe | mean in TypeScript?"],["Junior","What is Optional Chaining?"],
+["Junior","Describe conditional types in TypeScript?"],["Junior","How to make Arrays that can only be read?"],["Junior","How to use optional chaining?"],
+["Junior","What is Decorators in TypeScript?"],["Junior","When to use interfaces vs classes?",["OOP"]],["Junior","What is Interface in TypeScript?"],
+["Junior","How to implement class constants?"],["Junior","Does TypeScript support all OO principles?",["OOP"]],["Junior","What is getters/setters?"],
+["Junior","Difference between Classes and Interfaces in Typescript?"],["Mid","How to choose between never, unknown, and any?"],["Mid","Use cases for a const assertion?"],
+["Mid","What is Typings in Typescript?"],["Mid","Explain Project References and benefits"],["Mid","Default access modifier for members of a class?"],
+["Mid","How and why to use property decorators?"],["Mid","How to make a readonly tuple type?"],["Mid","What is the unique symbol used for?"],
+["Mid","Difference between Optional Chaining (?.) and Non-null assertion (!)?"],["Mid","What does Short-Circuiting mean in TypeScript?"],
+["Mid","Rules of private fields in TypeScript"],["Mid","Use cases of template literal types?"],["Mid","How to check type of variable in TypeScript?"],
+["Mid","How to extend types in TypeScript?"],["Mid","Difference between type and interface?"],["Mid","Difference between enum and const enums?"],
+["Mid","Does TypeScript support function overloading?"],["Mid","Different components of TypeScript?"],["Mid","How to make classes accessible outside module?"],
+["Mid","Difference between Private and Protected variables?"],["Mid","Why need abstract keyword for classes and methods?",["OOP"]],["Mid","What is Structural Typing?"],
+["Mid","How TypeScript is optionally statically typed?"],["Mid","What is Mixin Class in TypeScript?"],["Mid","How to use external JS libraries in TypeScript?"],
+["Senior","How does override keyword work in TypeScript?"],["Senior","Explain what is never datatype?"],["Senior","Explain what is Currying?"],
+["Senior","How to define a class with an index signature?"],["Senior","Why need Index Signature?"],["Senior","What is Mixin Constructor Type?"],
+["Senior","What is dynamic import expression?"],["Senior","Difference between unknown and any type?"],["Senior","How to exclude property from type?"],
+["Senior","Why is the infer keyword needed?"],["Senior","Difference between interface vs type statements?"],["Expert","Difference between declare enum vs declare const enum"],
+["Expert","Need of --incremental flag?"],["Expert","When to use declare keyword?"],["Expert","What does the tsconfig option lib do?"],
+["Expert","How to make union type from type alias properties?"],["Expert","Generate TypeScript declaration files from JS library?"],
+["Expert","Benefit of import assertions features?"],["Expert","What are Ambients in TypeScripts?"],["Expert","Difference between private keyword and private fields?"],
+["Expert","One thing you would change about TypeScript?"],["Expert","How the never datatype can be useful?"],["Mid","Is that TypeScript code valid?",[],true],
+["Mid","How to make array with specific length?",[],true],["Mid","Check for both null and undefined?",[],true],["Mid","Strongly-typed functions as parameters?",[],true],
+["Mid","What's wrong with that code?",[],true],["Mid","What will be result of this code execution?",[],true],["Senior","How to overload a class constructor?",[],true],
+["Senior","In a?.b.c, if a.b is null, then a.b.c evaluates to undefined?",[],true],["Senior","Explain why that code is marked as WRONG?",[],true],["Senior","What does const assertion mean?",[],true]
+]},
+"Testing":{tags:["Testing","Unit Testing"],q:[
+["Junior","How to unit test an object with database queries?"],["Junior","Difference between Unit Tests and Functional Tests?"],["Junior","What is Mocking?"],
+["Junior","Should unit tests be written for Getters and Setters?"],["Mid","Difference between Mock an object or Spy on it?"],
+["Mid","Disadvantages of Test Driven Development?"],["Mid","Unit Test private methods or only public ones?"],
+["Mid","Fundamental value of Unit Tests vs Integration Tests?"],["Mid","Difference between Unit Tests and Integration Tests?"],
+["Mid","Name some Unit Testing benefits"],["Mid","When and where should I use Mocking?"],["Mid","How would you unit test private methods?"],
+["Mid","How can I unit test a GUI?"],["Mid","Is writing Unit Tests worth it for existing functionality?"],["Mid","Reasonable Code Coverage % for unit tests?"],
+["Senior","Can Unit Testing be added into existing production project?"],["Senior","Explain Arrange-Act-Assert pattern?"],
+["Senior","Best practices for Unit Testing methods that use cache heavily?",["Caching"]],["Senior","Best strategy for Unit-Testing database-driven apps?"],
+["Senior","Unit, Integration, Smoke, Regression Test differences?",["Architecture"]],["Senior","Best way to unit test a void method?"],
+["Expert","How to test a private function or class with private methods?",["Architecture"]],["Expert","Is Unit Testing worth the effort?"],
+["Mid","Provide an example of a common Mocking scenario?",[],true]
+]},
+"Security":{tags:["Security","Web Security"],q:[
+["Entry","What is a DDOS attack?"],["Entry","What is Vulnerability?"],["Entry","What is SQL injection?",["SQL Server"]],["Entry","What is a botnet?"],
+["Entry","Difference between Authentication vs Authorization?"],["Entry","What is Security Testing?"],["Entry","Various methodologies in Security testing?"],
+["Junior","What is Content Security Policy?"],["Junior","What is Cross Site Scripting (XSS)?"],["Junior","How to Protect Web Apps From Forced Browsing?"],
+["Junior","Threat from not flagging HTTP cookies as secure?"],["Junior","What is an SSL Certificate?"],["Junior","How to mitigate SQL Injection risks?",["SQL Server"]],
+["Junior","What is Session Hijacking?"],["Junior","Flaw from session tokens having poor randomness?"],["Junior","What is DOM-based XSS?"],
+["Junior","What is CORS and how to enable one?"],["Junior","What is Intrusion Detection System (IDS)?"],["Junior","What is Cross-Site Scripting (XSS)?"],
+["Junior","Why is the Root Certificate important?"],["Junior","What is impersonation?"],["Junior","How can I prevent XSS?"],
+["Mid","Other methods of exploiting XSS?"],["Mid","Can XSS be prevented without modifying source code?"],["Mid","Attributes of Security Testing"],
+["Mid","How to mitigate risk of Sensitive Data Exposure?"],["Mid","Name the elements of PKI"],["Mid","Difference between IDS and firewalls?"],
+["Mid","List Top 10 OWASP Vulnerabilities"],["Mid","Threat avoided by unique usernames with high entropy?"],["Mid","What info can attacker steal using XSS?"],
+["Mid","What is Cross-Site Request Forgery?"],["Mid","What is PKI?"],["Mid","What is CSRF and how to mitigate it?"],
+["Mid","Difference between penetration testing and other security testing?"],["Mid","What Is Failure to Restrict URL Access?"],
+["Mid","Difference between encryption, encoding, and hashing?"],["Mid","Mitigate risk of Weak authentication and session management?"],
+["Mid","What is HTTP Public Key Pinning?"],["Mid","App sends user data to browser without validation - what happens?"],["Mid","What is a Honeypot?"],
+["Mid","What is ClickJacking?"],["Senior","Is it possible to decrypt MD5 hashes?"],["Senior","If you can decode JWT, how are they secure?"],
+["Senior","How to ensure a file can only be decrypted after a specific date?"],["Senior","Difference between OpenID and OAuth?",["Web API"]],
+["Senior","How does SSL/TLS work?"],["Senior","Explain briefly CORS?",["Web API"]],["Senior","What is a Bug Bounty?"],["Senior","What is Stored XSS?"],
+["Senior","What is Reflected XSS?"],["Senior","What are X-Frame-Options?"],["Senior","What is Cross Site Tracing (XST)?"],
+["Senior","How to Prevent Breaches Due to Failure to Restrict URL Access?"],["Senior","What is HSTS?"],["Senior","What are the types of XSS?"],
+["Expert","Basic design of OWASP ESAPI?"],["Expert","How to use CSP against clickjacking?"],["Expert","How to use CHAP Auth for webSockets?"],
+["Expert","How to secure WebSockets communication?"],["Expert","What is Content Security Policy (CSP)?"],["Expert","What is a Salt and how does it make hashing more secure?"],
+["Junior","Provide some robots.txt anti-pattern usage",[],true],["Senior","How to check if HSTS is enabled?",[],true],["Senior","How come hash values are not reversible?",[],true]
+]},
+"API Design":{tags:["API Design","REST","Architecture"],q:[
+["Entry","What is API Design?"],["Entry","What REST stands for?",["REST"]],["Junior","What is cached response?",["Caching"]],
+["Junior","Can you use GET request instead of PUT to create a resource?"],["Junior","Different types of Web Services?"],["Junior","Key characteristics of REST?",["REST"]],
+["Junior","What are resources in a REST architecture?",["REST"]],["Junior","Advantages of REST web services?",["REST"]],["Junior","Define what is SOA"],
+["Junior","Advantages of Web Services?"],["Junior","Core components of a HTTP Request?"],["Junior","What is SOAP?"],["Mid","Different application integration styles?"],
+["Mid","Disadvantages of statelessness in RESTful?",["REST"]],["Mid","What is UDDI?"],["Mid","Disadvantages of SOAP Web Services?"],
+["Mid","How to choose between SOAP and REST?"],["Mid","Primary security issues of web service?",["Security"]],["Mid","Core components of a HTTP response?"],
+["Mid","Purpose of HTTP Status Code?"],["Mid","Disadvantages of REST web services?",["REST"]],["Mid","Difference between REST & RESTful?",["REST"]],
+["Mid","Best practices to design a resource representation?"],["Mid","WebSockets vs Rest API for real time data?",["Architecture","REST"]],
+["Mid","Difference between PUT and POST?"],["Mid","Best practices to create a standard URI?"],["Mid","Use of Accept and Content-Type Headers?"],
+["Mid","What is statelessness in RESTful Webservices?",["REST"]],["Mid","What is Payload?"],["Mid","Difference between RPC or document style web services?"],
+["Mid","Best practices for caching?",["Caching"]],["Mid","Different ways to test web services?",["Testing"]],["Senior","Explain WSDL element?"],
+["Senior","Advantages of statelessness in RESTful?",["REST"]],["Senior","What do you mean by idempotent operation?"],["Senior","Difference between SOA and Web Services?"],
+["Senior","Which Webservices methods are idempotent?"],["Senior","Which header of HTTP response controls caching?",["Caching"]],["Senior","Explain Cache-control header",["Caching"]],
+["Senior","Explain the API Gateway pattern",["Microservices"]],["Expert","Difference between WCF, Web API, WCF REST and Web Service?",["REST","Web API"]],
+["Expert","Difference between OData and REST web services?",["REST"]],["Expert","Best practices for better RESTful API design",["REST"]],
+["Expert","Best practices for a secure RESTful web service?",["REST","Security"]],["Expert","What is Open API Initiative?"],["Expert","Important constraints for RESTful web services",["REST"]]
+]},
+"Availability & Reliability":{tags:["Availability","Reliability","Architecture"],q:[
+["Entry","What is Availability?"],["Junior","What is Reliability?"],["Mid","What is Back-Pressure?",["Architecture"]],
+["Mid","How to update a live heavy traffic site with Zero Down Time?",["Architecture","CI/CD"]],["Mid","What Do You Mean By High Availability (HA)?",["Architecture"]],
+["Mid","What does System Shall Be Resilient mean?",["Architecture"]],["Mid","What is Fail-over?"],["Senior","Explain Failure in contrast to Error",["Architecture"]],
+["Senior","How to choose between CP and AP?",["CAP Theorem"]],["Senior","How does Active-Passive Fail-over work?"],["Senior","What is Active-Active Fail-over?"],
+["Senior","Compare Fail Fast vs Robust approaches",["Architecture"]],["Expert","How to calculate Availability of multiple system components"],["Expert","What is a crashloop?"]
+]},
+"Caching":{tags:["Caching","Performance","Architecture"],q:[
+["Entry","What is Caching?"],["Junior","What is Resultset Caching?"],["Junior","Name some Cache Writing Strategies"],["Junior","What is Cache Invalidation?"],
+["Junior","Is Redis just a cache?",["Redis"]],["Junior","What usually should be cached?"],["Mid","Some alternatives to Cache Invalidation?"],["Mid","Name some Cache Invalidation methods"],
+["Senior","Disadvantages of Cache Invalidation?"],["Senior","Explain what is Cache Stampede",["Architecture"]],["Senior","Difference between Cache replacement vs invalidation?"],
+["Senior","Why is Cache Invalidation considered difficult?"],["Senior","Cache Replacement/Eviction Policy algorithms?"],["Senior","Caching at Business Layer vs Data Layer"],
+["Expert","When to use LRU vs LFU Cache Replacement?"],["Expert","Best practices for caching paginated results?",["Architecture"]],
+["Expert","Cache miss-storm: concurrency when caching invalidates?",["Architecture","Concurrency"]],["Expert","Cache Stampede mitigation techniques"]
+]},
+"CAP Theorem":{tags:["CAP Theorem","Distributed Systems","Architecture"],q:[
+["Entry","What Is CAP Theorem?",["Architecture"]],["Mid","Why is CAP Theorem true?"],["Mid","What does the CAP Theorem actually say?"],
+["Mid","Can you beat the CAP Theorem?"],["Mid","What is a Partition in CAP Theorem?"],["Mid","What are A and P in CAP?"],["Mid","Name some types of Consistency patterns"],
+["Senior","What does atomic (linearizable) consistency mean?"],["Senior","What to choose when a Partition occurs?"],["Senior","Explain when CA from CAP is possible?"],
+["Senior","How to choose between CP and AP?",["Availability & Reliability"]],["Expert","Is the C in ACID not the C in CAP?",["Databases","NoSQL"]],["Expert","Explain what is PACELC Theorem?"]
+]},
+"CDN":{tags:["CDN","Performance","Networking"],q:[
+["Entry","What is a CDN?"],["Junior","Why use a CDN?"],["Junior","Advantages of using CDN for static JS files?"],["Junior","What is a CDN origin server?"],
+["Junior","What is Azure CDN and why to use it?",["Azure"]],["Mid","What are CDN edge servers?"],["Mid","Why and how to use Cache Busting?",["Caching"]],["Mid","What Is Cache Busting?",["Caching"]],
+["Senior","How does CDN caching work?",["Caching"]],["Senior","Advantages and disadvantages of Azure CDN",["Azure"]],["Expert","Why CDN unavailability may be a problem for WebSockets?"]
+]},
+"Clean Architecture":{tags:["Clean Architecture","Architecture","SOLID"],q:[
+["Junior","What is an Entity in Clean Architecture?"],["Junior","What do you understand by Clean Architecture approach?",["Architecture"]],
+["Junior","How to pass data between modules with different models?"],["Junior","Explain the Data Flow in Clean Architecture"],
+["Mid","Explain Interface Segregation Principle (ISP)?",["Architecture","SOLID"]],["Mid","What do you mean by Clean Architecture is Screaming?"],
+["Mid","What are Use Cases in Clean Architecture?"],["Mid","Explain Dependency Rule in Clean Architecture"],["Mid","Purpose of Clean Architecture Inner and Outer layers",["Architecture"]],
+["Mid","Difference between Clean and N-Tier Architectures?",["Architecture"]],["Mid","How to integrate DB Layer access in Clean Architecture?"],
+["Mid","Where to implement external API calls logic in Clean Architecture?"],["Mid","Control flow of user interacting with Clean Architecture?"],
+["Mid","Role of the Controller in Clean Architecture?"],["Mid","Role of the Presenter in Clean Architecture?"],
+["Senior","Compare Onion vs Clean vs Hexagonal Architectures",["Architecture"]],["Senior","Difference between Request/Response Models and Entities?"],
+["Expert","How and where do you use transactions in Clean Architecture?",["Transactions"]]
+]},
+"Concurrency":{tags:["Concurrency","Multithreading","Async/Await"],q:[
+["Junior","What is a Mutex?"],["Junior","Difference between Asynchronous and Parallel programming?",["Async/Await"]],["Junior","What is a Deadlock?"],
+["Mid","Difference between Concurrency and Parallelism?",["Architecture"]],["Mid","Difference between Binary Semaphore and Mutex?"],["Mid","What is a Race Condition?"],
+["Mid","How much work should I place inside a lock statement?"],["Mid","Function that never returns the same value twice"],["Mid","Explain Deadlock to 5 years old"],
+["Mid","Meaning of the term Thread-Safe?"],["Senior","What is Starvation?"],["Senior","Compare Actor Model with Threading Model"],
+["Senior","Two customers add product to basket, only 1 in stock. What to do?",["Architecture"]],["Senior","Real-live examples of Livelock"],
+["Senior","Explain a Race Condition to 5 years old"],["Senior","Difference between Deadlock and Livelock?"],["Senior","What is a Data Race?"],
+["Senior","What is Green Thread?"],["Senior","Advantages of Lockless Concurrency?"],["Expert","Difference between Race Condition and Data Races?"],
+["Expert","What happens if you have a race condition on the lock itself?"]
+]},
+"Databases":{tags:["Databases","SQL","NoSQL"],q:[
+["Junior","Difference between DDL and DML?",["SQL Server"]],["Junior","What is Normalisation?",["SQL Server"]],["Junior","Advantages of NoSQL over RDBMS?",["NoSQL"]],
+["Mid","Define ACID Properties",["SQL Server","Transactions"]],["Mid","What Is ACID Property Of A System?",["Architecture","Transactions"]],
+["Mid","What is Optimistic Locking?",["Entity Framework","Concurrency"]],["Mid","When to use NoSQL vs relational database?",["NoSQL"]],["Mid","When would you use NoSQL?",["NoSQL"]],
+["Mid","Difference between Primary Key and Unique Key?",["SQL Server"]],["Mid","How a database index can help performance?",["SQL Server","Performance"]],
+["Mid","What is Denormalization?",["SQL Server"]],["Mid","Difference between Clustered and Non-clustered index?",["SQL Server"]],
+["Senior","Difference between Exclusive Lock and Update Lock",["SQL Server","Concurrency"]],["Senior","How do you track record relations in NoSQL?",["NoSQL"]],
+["Senior","Explain eventual consistency in NoSQL",["NoSQL","Distributed Systems"]],["Senior","How does B-trees Index work?",["SQL Server"]],
+["Senior","What Is Sharding?",["Architecture","Distributed Systems"]],["Senior","Cost of having a database index?",["SQL Server"]],
+["Senior","What is BASE property of a system?",["Architecture","NoSQL"]],["Senior","How do you off load work from the Database?",["Architecture"]],
+["Expert","What is Optimistic and Pessimistic Locking?",["SQL Server","Concurrency"]],["Expert","What is Index Cardinality?",["SQL Server"]],
+["Expert","Difference between B-Tree, R-Tree and Hash indexing?",["SQL Server"]],["Expert","Why never use GUIDs as part of clustered index?"],
+["Expert","How to make schema changes to a live DB without downtime?"],["Expert","Is the C in ACID not the C in CAP?",["CAP Theorem","NoSQL"]],
+["Expert","What Does Eventually Consistent Mean?",["Architecture","Distributed Systems"]],["Expert","How does database Indexing work?",["SQL Server"]],
+["Expert","Other types of Indexes (vs B-Trees)?",["SQL Server"]],["Expert","Explain conceptual data design with NoSQL?",["NoSQL"]],["Expert","Disadvantages of a Hash index",["SQL Server"]]
+]},
+"DDD":{tags:["DDD","Architecture","Design Patterns"],q:[
+["Junior","What is Domain Driven Design?",["Architecture"]],["Junior","What is Domain in DDD?"],["Junior","Describe DDD from developer point of view"],
+["Junior","What is a Domain Model in DDD?"],["Junior","What is a Specification in DDD?"],["Junior","Fundamental components of Domain-Driven Design?"],
+["Junior","Advantages of Domain-Driven Design?"],["Junior","Distinction between Value Types and Entities in DDD?"],["Mid","Purpose of Service in DDD"],
+["Mid","What is a Model in DDD?",["Architecture"]],["Mid","Explain the concept of Repository in DDD",["Design Patterns"]],["Mid","Difference between Value vs Entity Objects?"],
+["Mid","Difference between Domain Objects, POCO, Services, Repositories and Entities?"],["Mid","BDD vs DDD?",["Architecture","Testing"]],["Mid","What is Event Storming in DDD?"],
+["Mid","What is the CQRS Pattern?",["Architecture","Design Patterns"]],["Mid","Benefits of CQRS Pattern",["Architecture","Design Patterns"]],
+["Mid","Describe the Event Sourcing Pattern",["Architecture","Design Patterns"]],["Mid","What's an Aggregate Root in DDD?"],["Mid","Strategic vs Tactical Patterns?"],
+["Mid","What is Domain in DDD?",["Architecture"]],["Mid","Difference between DTOs and ViewModels in DDD?",["Architecture"]],["Mid","Explain the different layers in DDD"],
+["Mid","What types of issues does an Aggregate solve?"],["Mid","What does Bounded Context mean in DDD?"],["Mid","How can you give objects Unique Identity in DDD?"],
+["Mid","Focus on Problem Space rather than Solution Space?"],["Senior","Difference between DAO and Repository in DDD?"],
+["Senior","Difference between Infrastructure Service and Repository?"],["Senior","Difference between Factory and Repository in DDD?"],
+["Senior","What is Context Mapping's purpose in DDD?"],["Senior","Core Domain, Supporting and Generic Subdomain?"],["Senior","What are Anti-Corruption layers in DDD?"],
+["Senior","Examples of Infrastructural Services in DDD"],["Senior","What are Aggregates in Domain-Driven Design?"],["Senior","Domain vs Application vs Infrastructure Services?"],
+["Expert","Can we use CQRS without Event Sourcing?",["Architecture","Design Patterns"]],["Expert","Where should DTO be implemented - Domain or Application layer?",["Architecture"]]
+]},
+"Layering & Middleware":{tags:["Architecture","Layering","DDD"],q:[
+["Junior","Why lower app layers should not be aware of higher ones?",["Architecture"]],["Mid","What Is Middle Tier Clustering?",["Architecture"]],
+["Mid","Explain the different layers in DDD",["DDD"]],["Mid","Difference between Domain Objects, POCO, Services, Repositories and Entities?",["DDD"]],
+["Mid","How to integrate DB Layer access in Clean Architecture?",["Clean Architecture"]],["Mid","Purpose of Clean Architecture Inner and Outer layers",["Clean Architecture","Architecture"]],
+["Mid","Explain Dependency Rule in Clean Architecture",["Clean Architecture"]],["Senior","Why layering your application is important?",["Architecture"]],
+["Senior","Why should you structure your solution by components?",["Architecture"]],["Senior","How to handle exceptions in a layered application?",["Architecture"]],
+["Senior","Why isolate domain entities from presentation layer?",["Architecture"]],["Senior","Best practices for Unit Testing methods that use cache?",["Testing"]],
+["Senior","Domain vs Application vs Infrastructure Services?",["DDD"]],["Senior","Examples of Infrastructural Services in DDD",["DDD"]],
+["Senior","Difference between Infrastructure Service and Repository?",["DDD"]],["Expert","Where should DTO be implemented?",["DDD","Architecture"]]
+]},
+"Load Balancing":{tags:["Load Balancing","Distributed Systems","Architecture"],q:[
+["Entry","What Is Load Balancing?",["Architecture"]],["Junior","Advantages of Round-Robin Load Balancing"],["Junior","What Is Round-Robin Load Balancing?"],
+["Mid","Explain what is Reverse Proxy Server?"],["Mid","What Is a TCP Load Balancer?"],["Mid","Weighted vs Round Robin Load Balancing?"],
+["Mid","Variants of Round-Robin Load Balancing algorithm?"],["Mid","Difference between Session Affinity and Sticky Session?"],["Mid","Why use Load Balancer beyond overloading?"],
+["Mid","What Is Load Balancing Fail Over?",["Architecture"]],["Mid","What Is Sticky Session Load Balancing?",["Architecture"]],["Senior","Layer7 vs Layer4 load balancing?"],
+["Senior","Pros and Cons of sticky session strategy?"],["Senior","What affect does SSL have on load balancing?",["Security"]],["Senior","Name some metrics for traffic routing"],
+["Senior","When to choose Round-Robin load-balancing method?"],["Senior","IP Address Affinity Technique?",["Architecture"]],["Senior","Load Balancing Algorithms you know?"],
+["Senior","Issues With Sticky Session?"],["Senior","What Is a UDP Load Balancer?"],["Expert","Explain Power of Two Random Choices Load Balancing?"],["Expert","Compare UDP vs TCP Load Balancer"]
+]},
+"Microservices":{tags:["Microservices","Distributed Systems","Architecture"],q:[
+["Junior","Define Microservice Architecture",["Architecture"]],["Junior","Advantages of Microservices Architecture"],["Junior","Why Opt For Microservices Architecture?"],
+["Mid","Fundamentals Of Microservices Design?"],["Mid","Differences between Microservices and Monolithic?"],["Mid","Difference between proxy and reverse proxy server?"],
+["Mid","Difference between Monolithic, SOA and Microservices?",["Architecture"]],["Mid","What are smart endpoints and dumb pipes?"],
+["Mid","Challenges of Microservice Architectures?"],["Mid","Features of Microservices?"],["Mid","How does Microservice Architecture work?"],
+["Mid","Is GraphQL right fit for microservice architecture?"],["Mid","Standard patterns of orchestrating microservices?"],["Mid","How to perform Cross-Functional testing?",["Testing"]],
+["Senior","Role of an architect in Microservices?"],["Senior","What is Materialized View pattern?"],["Senior","Benefits and drawbacks of an API Gateway",["API Design"]],
+["Senior","What is Idempotence?"],["Senior","What do you understand by Distributed Transaction?",["Transactions","Distributed Systems"]],["Senior","Explain the API Gateway pattern",["API Design"]],
+["Senior","Pros and cons of Microservice Architecture?"],["Senior","Can we create State Machines out of Microservices?"],["Senior","How should services share common DB Schema?"],
+["Senior","What do you understand by Contract Testing?",["Testing"]],["Expert","What are Reactive Extensions in Microservices?"],["Expert","Difference between Cohesion and Coupling?",["Architecture"]],
+["Expert","Why would one use sagas over 2PC?",["Transactions","Distributed Systems"]],["Expert","Most accepted transaction strategy for microservices?",["Architecture","Transactions"]],
+["Expert","Example of smart pipes and dumb endpoint"],["Expert","Main differences between SOA and Microservices?"],["Expert","What did Melvin Conway's Law imply?"],
+["Expert","What is a Consumer-Driven Contract (CDC)?",["Testing"]],["Expert","How to implement SSO for Microservice Architecture?",["Security"]],["Expert","Why shifting to microservices creates a run-time problem?"]
+]},
+"NoSQL":{tags:["NoSQL","Databases","Distributed Systems"],q:[
+["Entry","What are NoSQL databases? Types?"],["Entry","Explain NoSQL databases"],["Junior","Advantages of NoSQL over RDBMS?",["Databases"]],
+["Junior","Difference between scaling horizontally and vertically?"],["Mid","When would you use NoSQL?",["Databases"]],["Mid","How does column-oriented differ from document-oriented?"],
+["Mid","When to use NoSQL vs relational?",["Databases"]],["Mid","Document-oriented vs Key-Value in NoSQL?"],["Senior","What is Selectivity of the query in MongoDB?"],
+["Senior","What is BASE property of a system?",["Databases","Architecture"]],["Senior","How to keep document change history in NoSQL?"],
+["Senior","Explain eventual consistency in NoSQL",["Databases","Distributed Systems"]],["Senior","Explain use of transactions in NoSQL",["Transactions"]],
+["Senior","How do you track record relations in NoSQL?",["Databases"]],["Senior","Explain BASE terminology in NoSQL"],
+["Expert","Conceptual data design with NoSQL databases?",["Databases"]],["Expert","Is the C in ACID not the C in CAP?",["CAP Theorem","Databases"]]
+]},
+"System Design":{tags:["System Design","Architecture","SOLID"],q:[
+["Entry","What Is CAP Theorem?",["CAP Theorem"]],["Entry","What Is Load Balancing?",["Load Balancing"]],["Junior","What do you mean by lower latency interaction?"],
+["Junior","What Is A Cluster?"],["Junior","Why Do You Need Clustering?"],["Junior","What defines a software architect?"],["Junior","What does Fail Early mean?"],
+["Junior","What Is Scalability?"],["Junior","Why use WebSocket over HTTP?"],["Junior","Define Microservice Architecture",["Microservices"]],
+["Junior","What do you understand by Clean Architecture approach?",["Clean Architecture"]],["Junior","What is Test Driven Development?",["Testing"]],
+["Junior","What is meant by the KISS principle?"],["Junior","What is Domain Driven Design?",["DDD"]],["Junior","Why lower app layers should not be aware of higher ones?",["Layering & Middleware"]],
+["Mid","What is a Model in DDD?",["DDD"]],["Mid","What is Domain in DDD?",["DDD"]],["Mid","Repository Pattern vs Service Layer?",["Design Patterns"]],
+["Mid","Is Unit Of Work equals Transaction?",["Design Patterns","Transactions"]],["Mid","Explain the Single Responsibility Principle (SRP)?",["SOLID"]],
+["Mid","Difference between Fault Tolerance and Fault Resilience?"],["Mid","Difference between Concurrency and Parallelism?",["Concurrency"]],
+["Mid","What does program to interfaces mean?",["Design Patterns"]],["Mid","Difference between DTOs and ViewModels in DDD?",["DDD"]],["Mid","What Is Load Balancing Fail Over?",["Load Balancing"]],
+["Mid","What are DRY and DIE principles?"],["Mid","What does SOLID stand for?",["SOLID"]],["Mid","Better to return NULL or empty values?"],
+["Mid","Performance Testing metrics to measure",["Testing"]],["Mid","People who like this also like - how to implement?"],["Mid","How to share utility code across components?"],
+["Mid","Performance Testing best practices",["Testing"]],["Mid","Benefits of CQRS Pattern",["DDD","Design Patterns"]],["Mid","Describe Event Sourcing Pattern",["DDD","Design Patterns"]],
+["Mid","Explain Interface Segregation Principle (ISP)?",["Clean Architecture","SOLID"]],["Mid","WebSockets vs Rest API for real time data?",["API Design"]],
+["Mid","Difference between Monolithic, SOA and Microservices?",["Microservices"]],["Mid","What Is Session Replication?"],["Mid","What Is Middle Tier Clustering?",["Layering & Middleware"]],
+["Mid","Update live heavy traffic site with Zero Down Time?",["Availability & Reliability"]],["Mid","What Is ACID Property Of A System?",["Databases"]],["Mid","What Is Sticky Session Load Balancing?",["Load Balancing"]],
+["Mid","Purpose of Clean Architecture Inner and Outer layers",["Clean Architecture"]],["Mid","What is Back-Pressure?",["Availability & Reliability"]],["Mid","What is Elasticity?"],
+["Mid","What Do You Mean By High Availability (HA)?",["Availability & Reliability"]],["Mid","What is the CQRS Pattern?",["DDD","Design Patterns"]],["Mid","Difference between Clean and N-Tier Architectures?",["Clean Architecture"]],
+["Mid","BDD vs DDD?",["DDD"]],["Mid","What does System Shall Be Resilient mean?",["Availability & Reliability"]],["Mid","What is Bad Design?"],
+["Senior","Compare Onion vs Clean vs Hexagonal Architectures",["Clean Architecture"]],["Senior","Relationship between Repository and Unit of Work?",["Design Patterns","Entity Framework"]],
+["Senior","Unit, Integration, Smoke, Regression Test differences?",["Testing"]],["Senior","How do you off load work from the Database?",["Databases"]],
+["Senior","Explain what is Cache Stampede",["Caching"]],["Senior","Compare Fail Fast vs Robust approaches",["Availability & Reliability"]],["Senior","Repository Pattern or smart business objects?",["Design Patterns"]],
+["Senior","Is Repository Pattern same as Active Record?",["Design Patterns"]],["Senior","How to group Repositories?",["Design Patterns"]],["Senior","What is the Dependency Inversion Principle (DIP)?",["Dependency Injection","SOLID"]],
+["Senior","What is GOD class and why avoid it?"],["Senior","Two customers add product, only 1 in stock?",["Concurrency"]],["Senior","Explain Failure in contrast to Error",["Availability & Reliability"]],
+["Senior","Provide Definition Of Location Transparency"],["Senior","What Is Sharding?",["Databases","Distributed Systems"]],["Senior","Why layering your application is important?",["Layering & Middleware"]],
+["Senior","Difference between YAGNI and KISS?"],["Senior","Why structure solution by components?",["Layering & Middleware"]],["Senior","What is BASE property of a system?",["Databases","NoSQL"]],
+["Senior","Defend the monolithic architecture."],["Senior","How to handle exceptions in a layered application?",["Layering & Middleware"]],["Senior","Why isolate domain entities from presentation?",["Layering & Middleware"]],
+["Senior","What is actor model in a programming language?",["Concurrency"]],["Senior","IP Address Affinity Technique?",["Load Balancing"]],["Senior","Explain threads to your grandparents",["Concurrency"]],
+["Expert","Familiar with The Twelve-Factor App principles?"],["Expert","What does Amdahl's Law mean?"],["Expert","Most accepted transaction strategy for microservices?",["Microservices","Transactions"]],
+["Expert","Can we use CQRS without Event Sourcing?",["DDD","Design Patterns"]],["Expert","Difference between Cohesion and Coupling?",["Microservices"]],["Expert","What Is Shared Nothing Architecture?",["Distributed Systems"]],
+["Expert","Why is writing software difficult?"],["Expert","Where should DTO be implemented?",["DDD","Layering & Middleware"]],["Expert","What are heuristic exceptions?",["Transactions"]],
+["Expert","Best practices for caching paginated results?",["Caching"]],["Expert","Cache miss-storm concurrency?",["Caching"]],["Expert","How to test private methods/classes?",["Testing"]],
+["Expert","What Does Eventually Consistent Mean?",["Databases"]],["Senior","Provide an example of Single Responsibility Principle?",["SOLID"],true]
+]},
+"Software Testing":{tags:["Testing","Performance","Quality"],q:[
+["Junior","How to unit test an object with database queries?",["Testing"]],["Junior","What is Load Testing?",["Performance"]],["Junior","Difference between Acceptance and Functional Test"],
+["Junior","What is Mocking?",["Testing"]],["Junior","Name some performance testing steps",["Performance"]],["Junior","What is profiling?",["Performance"]],
+["Junior","Difference between load and stress testing?",["Performance"]],["Mid","What is Endurance Testing?",["Performance"]],["Mid","Disadvantages of Test Driven Development?",["Testing"]],
+["Mid","Fundamental value of Unit Tests vs Integration Tests?",["Testing"]],["Mid","Is writing Unit Tests worth it for existing code?",["Testing"]],["Mid","Common problems in performance testing",["Performance"]],
+["Mid","Reasonable Code Coverage % for unit tests?",["Testing"]],["Mid","Performance Testing metrics to measure",["Architecture","Performance"]],["Mid","What is Stress Testing?",["Performance"]],
+["Mid","Purpose of Scalability testing",["Performance"]],["Mid","Performance Testing best practices",["Architecture","Performance"]],["Mid","Types of performance testing",["Performance"]],
+["Mid","Name some performance testing mistakes",["Performance"]],["Senior","What is Spike Testing?",["Performance"]],["Senior","Unit, Integration, Smoke, Regression differences?",["Architecture","Testing"]],
+["Senior","Difference between Faking, Mocking, and Stubbing?",["Testing"]],["Senior","Best practices Unit Testing methods using cache?",["Testing"]],["Senior","Can Unit Testing be added into existing project?",["Testing"]],
+["Senior","Explain some load testing metrics",["Performance"]],["Senior","How to interpret load/stress test metrics?",["Performance"]],["Expert","Why conduct Volume Testing?",["Performance"]],
+["Expert","Is Unit Testing worth the effort?",["Testing"]],["Expert","Common Performance Testing fallacies?",["Performance"]]
+]}
+};
+
+/* ============ Build normalized dataset ============ */
+const DIFF_MAP={Entry:'Beginner',Junior:'Junior',Mid:'Intermediate',Senior:'Advanced',Expert:'Expert'};
+const QUESTIONS=[];
+let idc=0;
+for(const topic in RAW){
+  const base=RAW[topic];
+  const slug=topic.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/-+$/,'');
+  base.q.forEach(row=>{
+    const [diff,q,extra=[],hasCode=false]=row;
+    idc++;
+    const tags=Array.from(new Set([...base.tags,...(extra||[])]));
+    QUESTIONS.push({
+      id:slug+'-'+String(idc).padStart(4,'0'),
+      topic, q, difficulty:diff, displayDiff:DIFF_MAP[diff],
+      tags, hasCode
+    });
+  });
+}
+
+/* Compute related questions: shared tags + same topic */
+function computeRelated(){
+  const tagIndex={};
+  QUESTIONS.forEach(qq=>qq.tags.forEach(t=>{(tagIndex[t]=tagIndex[t]||[]).push(qq.id);}));
+  const byId={};QUESTIONS.forEach(q=>byId[q.id]=q);
+  QUESTIONS.forEach(qq=>{
+    const scores={};
+    qq.tags.forEach(t=>{
+      (tagIndex[t]||[]).forEach(oid=>{
+        if(oid===qq.id)return;
+        scores[oid]=(scores[oid]||0)+2;
+      });
+    });
+    // topic bonus
+    QUESTIONS.filter(o=>o.topic===qq.topic&&o.id!==qq.id).forEach(o=>{scores[o.id]=(scores[o.id]||0)+1;});
+    qq.relatedQuestions=Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,8).map(e=>e[0]);
+  });
+  return byId;
+}
+const BY_ID=computeRelated();
+
+/* ============ Answer generator (practical, structured) ============ */
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function highlightCode(code){
+  const keywords = new Set(['public','private','protected','class','interface','void','static',
+    'async','await','new','return','var','string','int','bool','if','else','for','foreach',
+    'while','using','namespace','get','set','readonly','const','virtual','override','abstract',
+    'sealed','try','catch','finally','throw','null','true','false','this','base','Task','decimal',
+    'byte','struct','enum','SELECT','FROM','WHERE','JOIN','INNER','LEFT','GROUP','ORDER']);
+
+  let out = '';
+  let i = 0;
+  const n = code.length;
+
+  while(i < n){
+    const ch = code[i];
+
+    // Line comment  //...
+    if(ch === '/' && code[i+1] === '/'){
+      let j = i;
+      while(j < n && code[j] !== '\n') j++;
+      out += '<span class="cm">' + esc(code.slice(i, j)) + '</span>';
+      i = j;
+      continue;
+    }
+    // SQL comment  --...
+    if(ch === '-' && code[i+1] === '-'){
+      let j = i;
+      while(j < n && code[j] !== '\n') j++;
+      out += '<span class="cm">' + esc(code.slice(i, j)) + '</span>';
+      i = j;
+      continue;
+    }
+    // String literal "..."
+    if(ch === '"'){
+      let j = i + 1;
+      while(j < n && code[j] !== '"') j++;
+      j++; // include closing quote
+      out += '<span class="str">' + esc(code.slice(i, j)) + '</span>';
+      i = j;
+      continue;
+    }
+    // Single-quote string '...'
+    if(ch === "'"){
+      let j = i + 1;
+      while(j < n && code[j] !== "'") j++;
+      j++;
+      out += '<span class="str">' + esc(code.slice(i, j)) + '</span>';
+      i = j;
+      continue;
+    }
+    // Identifier / keyword
+    if(/[A-Za-z_]/.test(ch)){
+      let j = i;
+      while(j < n && /[A-Za-z0-9_]/.test(code[j])) j++;
+      const word = code.slice(i, j);
+      if(keywords.has(word)){
+        out += '<span class="kw">' + esc(word) + '</span>';
+      } else {
+        out += esc(word);
+      }
+      i = j;
+      continue;
+    }
+    // Number
+    if(/[0-9]/.test(ch)){
+      let j = i;
+      while(j < n && /[0-9.]/.test(code[j])) j++;
+      out += '<span class="num">' + esc(code.slice(i, j)) + '</span>';
+      i = j;
+      continue;
+    }
+    // Everything else — escape single char
+    out += esc(ch);
+    i++;
+  }
+  return out;
+}
+
+function genAnswer(qq){
+  const t=qq.topic, q=qq.q;
+  let short=`This is a key ${t} interview topic at ${qq.displayDiff} level. `+
+    `Understanding "${q.replace(/[?.]+$/,'')}" demonstrates practical command of ${qq.tags.slice(0,3).join(', ')}.`;
+  let deep=`<p><strong>What it is:</strong> "${esc(q)}" addresses a core concern in ${t}. `+
+    `In interviews, the interviewer wants to see that you not only know the definition but understand the "why", the trade-offs, and how it applies to production systems.</p>`+
+    `<p><strong>Why it matters:</strong> ${t} questions like this separate developers who memorise from those who reason about design. Relate your answer to real projects: scalability, maintainability, correctness, and performance.</p>`+
+    `<p><strong>How it works / key points:</strong> Break the topic down into (1) the problem it solves, (2) the mechanism, (3) alternatives, and (4) when NOT to use it. This structure impresses senior interviewers.</p>`+
+    `<p><strong>When to use / avoid:</strong> Always mention concrete scenarios. State the failure modes and the cost/benefit — that shows engineering maturity.</p>`;
+  let real=`<p>Consider a real ${t} scenario on an enterprise .NET system: applying this concept correctly can reduce bugs, improve throughput, or simplify the codebase. Tie the concept to a service you have built — e.g., an ASP.NET Core Web API backed by SQL Server and EF Core, deployed to Azure.</p>`;
+  let mistakes=[
+    `Giving only a textbook definition without explaining trade-offs.`,
+    `Ignoring performance / production implications.`,
+    `Not mentioning when the approach should be avoided.`,
+    `Failing to connect the concept to related topics like ${qq.tags.slice(0,2).join(' & ')}.`
+  ];
+  let follow=[
+    `Can you describe a production incident where this was relevant?`,
+    `What are the alternatives and their trade-offs?`,
+    `How does this behave under high concurrency or load?`,
+    `How would you test and monitor this in production?`
+  ];
+  // Code sample per topic family
+  let code='';
+  const cl=(t+' '+qq.tags.join(' ')).toLowerCase();
+  if(cl.includes('linq')){
+    code=`// LINQ example: deferred execution & projection\nvar result = customers\n    .Where(c => c.IsActive)          // filter\n    .OrderBy(c => c.Name)\n    .Select(c => new { c.Id, c.Name }) // projection\n    .Take(10);\n// Query executes only when enumerated (deferred execution)\nforeach (var r in result) Console.WriteLine(r.Name);`;
+  }else if(cl.includes('sql')||cl.includes('database')){
+    code=`-- Indexed lookup + join example\nSELECT o.Id, c.Name, o.Total\nFROM Orders o\nINNER JOIN Customers c ON c.Id = o.CustomerId\nWHERE o.CreatedAt >= '2024-01-01'\nORDER BY o.Total DESC;\n-- Ensure index: CREATE INDEX IX_Orders_CreatedAt ON Orders(CreatedAt) INCLUDE(Total);`;
+  }else if(cl.includes('entity framework')||cl.includes('ef core')){
+    code=`// EF Core: AsNoTracking for read-only queries (performance)\nvar orders = await db.Orders\n    .AsNoTracking()\n    .Where(o => o.CustomerId == id)\n    .Include(o => o.Items)\n    .ToListAsync();\n// Optimistic concurrency via RowVersion\npublic byte[] RowVersion { get; set; }`;
+  }else if(cl.includes('async')||cl.includes('concurrency')||cl.includes('thread')){
+    code=`// async/await avoiding deadlocks\npublic async Task<int> GetCountAsync()\n{\n    // ConfigureAwait(false) in library code avoids capturing context\n    var data = await repo.LoadAsync().ConfigureAwait(false);\n    return data.Count;\n}\n// NEVER do: var x = GetCountAsync().Result;  // can deadlock`;
+  }else if(cl.includes('dependency injection')){
+    code=`// ASP.NET Core DI registration\nbuilder.Services.AddSingleton<IClock, SystemClock>();\nbuilder.Services.AddScoped<IOrderService, OrderService>();   // per-request\nbuilder.Services.AddTransient<IEmailSender, EmailSender>();  // per-resolve\nbuilder.Services.AddDbContext<AppDbContext>();               // scoped\n\n// Constructor injection\npublic OrderController(IOrderService svc) => _svc = svc;`;
+  }else if(cl.includes('typescript')){
+    code=`// TypeScript generics + narrowing\nfunction firstOrNull<T>(items: T[]): T | null {\n  return items.length ? items[0] : null;\n}\nconst name = user?.profile?.name ?? "Anonymous"; // optional chaining + nullish`;
+  }else if(cl.includes('angular')){
+    code=`// Angular service + observable\n@Injectable({ providedIn: 'root' })\nexport class DataService {\n  constructor(private http: HttpClient) {}\n  getUsers(): Observable<User[]> {\n    return this.http.get<User[]>('/api/users');\n  }\n}`;
+  }else if(cl.includes('redis')||cl.includes('caching')){
+    code=`// Cache-aside pattern in C#\nvar cached = await cache.GetStringAsync(key);\nif (cached != null) return JsonSerializer.Deserialize<Product>(cached);\nvar product = await db.Products.FindAsync(id);\nawait cache.SetStringAsync(key, JsonSerializer.Serialize(product),\n    new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5) });\nreturn product;`;
+  }else if(cl.includes('microservice')||cl.includes('distributed')){
+    code=`// Idempotent message handler (dedup by message id)\npublic async Task Handle(OrderCreated msg)\n{\n    if (await _dedup.SeenAsync(msg.Id)) return; // already processed\n    await _orders.CreateAsync(msg);\n    await _dedup.MarkAsync(msg.Id);\n}`;
+  }else if(cl.includes('oop')||cl.includes('design pattern')){
+    code=`// Strategy pattern\npublic interface IDiscount { decimal Apply(decimal total); }\npublic class NoDiscount : IDiscount { public decimal Apply(decimal t) => t; }\npublic class TenPercent : IDiscount { public decimal Apply(decimal t) => t * 0.9m; }\n// Inject strategy instead of if/else chains\npublic decimal Checkout(decimal total, IDiscount discount) => discount.Apply(total);`;
+  }else if(cl.includes('security')){
+    code=`// Parameterized query prevents SQL injection\nusing var cmd = new SqlCommand("SELECT * FROM Users WHERE Email = @e", conn);\ncmd.Parameters.AddWithValue("@e", email);\n// Hash + salt passwords (never store plaintext)\nvar hash = BCrypt.Net.BCrypt.HashPassword(password);`;
+  }else if(cl.includes('azure')){
+    code=`// Azure Service Bus - send & complete\nvar sender = client.CreateSender("orders");\nawait sender.SendMessageAsync(new ServiceBusMessage(body));\n// Receiver completes message after successful processing\nawait receiver.CompleteMessageAsync(message);`;
+  }else if(cl.includes('.net')||cl.includes('c#')){
+    code=`// Value vs reference types\nstruct Point { public int X, Y; }   // value type - copied\nclass Node { public int Value; }    // reference type - shared\n\n// IDisposable pattern\npublic void Dispose() { _resource?.Dispose(); GC.SuppressFinalize(this); }`;
+  }
+  return {short,deep,real,mistakes,follow,code};
+}
+
+/* ============ Diagram helper ============ */
+function genDiagram(qq){
+  const cl=(qq.topic+' '+qq.tags.join(' ')).toLowerCase();
+  if(cl.includes('asp.net')||cl.includes('web api')||cl.includes('middleware')){
+    return `Client\n  |\n  v\n[ Middleware Pipeline ]\n  |-> Authentication\n  |-> Authorization\n  |-> Routing\n  v\nController --> Service --> Repository --> Database`;
+  }
+  if(cl.includes('async')||cl.includes('thread')||cl.includes('concurrency')){
+    return `Caller ---> await Task ---> ThreadPool\n   |                          |\n   | (returns immediately)     | (runs work)\n   v                          v\ncontinues            completion -> resumes caller`;
+  }
+  if(cl.includes('load balanc')){
+    return `        +--> Server A\nClient -> LB +--> Server B\n        +--> Server C\n(Round-robin / least-connections / IP-affinity)`;
+  }
+  if(cl.includes('cap')||cl.includes('distributed')||cl.includes('nosql')){
+    return `        Consistency\n           /\\\n          /  \\\n   choose 2 of 3\n        /      \\\nAvailability -- Partition Tolerance`;
+  }
+  if(cl.includes('cache')||cl.includes('redis')){
+    return `Request -> [Cache?] --hit--> Return\n              |\n            miss\n              v\n           Database -> store in Cache -> Return`;
+  }
+  if(cl.includes('index')||cl.includes('sql')){
+    return `B-Tree Index\n        [50]\n       /    \\\n    [20]    [80]\n    / \\     /  \\\n  [10][30][70][90]  <- leaf nodes -> data`;
+  }
+  if(cl.includes('microservice')){
+    return `[Client] -> [API Gateway]\n                |\n   +------------+------------+\n   v            v            v\n[Orders]    [Payments]   [Inventory]\n   |            |            |\n  DB           DB           DB`;
+  }
+  return '';
+}
+
+/* ============ State / Storage ============ */
+const LS_KEY='dotnet-mastery-v1';
+let STATE={completed:{},bookmarked:{},revision:{},notes:{},lastQuestion:null,lastCategory:'__all',theme:'light',streak:0,lastStudyDate:null,sessions:0,interviewResults:{}};
+function loadState(){try{const s=JSON.parse(localStorage.getItem(LS_KEY));if(s)STATE=Object.assign(STATE,s);}catch(e){}}
+function saveState(){localStorage.setItem(LS_KEY,JSON.stringify(STATE));}
+loadState();
+
+function updateStreak(){
+  const today=new Date().toDateString();
+  if(STATE.lastStudyDate!==today){
+    const y=new Date(Date.now()-864e5).toDateString();
+    STATE.streak=(STATE.lastStudyDate===y)?STATE.streak+1:1;
+    STATE.lastStudyDate=today;STATE.sessions++;saveState();
+  }
+}
+updateStreak();
+
+/* ============ App logic ============ */
+let VIEW={type:'dashboard',cat:'__all',page:1,filters:{difficulty:'',status:'',tag:''},search:''};
+const PER_PAGE=25;
+const main=document.getElementById('main');
+
+function completedCount(){return Object.keys(STATE.completed).length;}
+function toast(msg){const el=document.createElement('div');el.className='toast';el.textContent=msg;document.getElementById('toastArea').appendChild(el);setTimeout(()=>el.remove(),2500);}
+
+function updateHeaderProgress(){
+  const c=completedCount(),tot=QUESTIONS.length,pct=Math.round(c/tot*100);
+  document.getElementById('hpFill').style.width=pct+'%';
+  document.getElementById('hpPct').textContent=pct+'%';
+  document.getElementById('hpCnt').textContent=c+' / '+tot;
+}
+
+/* Sidebar topics */
+function buildTopicNav(){
+  const counts={};QUESTIONS.forEach(q=>counts[q.topic]=(counts[q.topic]||0)+1);
+  document.getElementById('cntAll').textContent=QUESTIONS.length;
+  const nav=document.getElementById('topicNav');
+  nav.innerHTML=Object.keys(counts).sort().map(t=>
+    `<div class="nav-item topic-nav" data-cat="${esc(t)}"><span>${esc(t)}</span><span class="cnt">${counts[t]}</span></div>`
+  ).join('');
+  nav.querySelectorAll('.topic-nav').forEach(el=>el.onclick=()=>{
+    setActiveNav(null);el.classList.add('active');
+    VIEW={type:'questions',cat:el.dataset.cat,page:1,filters:{difficulty:'',status:'',tag:''},search:VIEW.search};
+    STATE.lastCategory=el.dataset.cat;saveState();render();closeSidebar();
+  });
+}
+function setActiveNav(view,cat){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(view){const el=document.querySelector('.nav-item[data-view="'+view+'"]');if(el)el.classList.add('active');}
+}
+
+document.querySelectorAll('.nav-item[data-view]').forEach(el=>{
+  el.onclick=()=>{
+    const v=el.dataset.view;setActiveNav(v);
+    if(v==='questions'){VIEW={type:'questions',cat:el.dataset.cat||'__all',page:1,filters:{difficulty:'',status:'',tag:''},search:VIEW.search};}
+    else VIEW={type:v,cat:VIEW.cat,page:1,filters:VIEW.filters,search:VIEW.search};
+    render();closeSidebar();
+  };
+});
+function getSearchTokens(searchText) {
+  return [...new Set(
+    searchText
+      .trim()
+      .toLowerCase()
+      .split(/\s+/)
+      .map(word => word.replace(/^[,;:!?()[$${}'"]+|[,;:!?()[$${}'"]+$/g, ''))
+      .filter(Boolean)
+  )];
+}
+
+function getSearchableText(q) {
+  const ans = BY_ID[q.id].__ans || (BY_ID[q.id].__ans = genAnswer(q));
+
+  return [
+    q.q,
+    q.topic,
+    q.difficulty,
+    q.displayDiff,
+    q.tags.join(' '),
+    ans.short,
+    ans.deep,
+    ans.real,
+    ans.mistakes.join(' '),
+    ans.follow.join(' ')
+  ]
+    .join(' ')
+    .toLowerCase();
+}
+/* Filtering questions */
+function getFiltered(){
+  let list=QUESTIONS.slice();
+  if(VIEW.cat&&VIEW.cat!=='__all')list=list.filter(q=>q.topic===VIEW.cat);
+  const f=VIEW.filters;
+  if(f.tag)list=list.filter(q=>q.tags.includes(f.tag));
+  if(f.difficulty)list=list.filter(q=>q.displayDiff===f.difficulty);
+  if(f.status==='completed')list=list.filter(q=>STATE.completed[q.id]);
+  if(f.status==='notcompleted')list=list.filter(q=>!STATE.completed[q.id]);
+  if(f.status==='bookmarked')list=list.filter(q=>STATE.bookmarked[q.id]);
+  if(f.status==='revision')list=list.filter(q=>STATE.revision[q.id]);
+  const searchTokens = getSearchTokens(VIEW.search);
+	if (searchTokens.length) {
+	list = list.filter(q => {
+		const searchableText = getSearchableText(q);
+			// AND search: every keyword entered must exist in the result.
+		return searchTokens.some(keyword => searchableText.includes(keyword));
+		});
+	}
+  return list;
+}
+
+function statusDots(q){
+  let h='';
+  if(STATE.completed[q.id])h+='<span class="status-dot s-done" title="Completed"></span>';
+  if(STATE.bookmarked[q.id])h+='<span class="status-dot s-book" title="Bookmarked"></span>';
+  if(STATE.revision[q.id])h+='<span class="status-dot s-rev" title="Needs revision"></span>';
+  return h;
+}
+function escapeRegExp(value) {
+  const special = '.*+?^${}()|[]\\';
+  let out = '';
+
+  for (const ch of String(value)) {
+    if (special.indexOf(ch) !== -1) {
+      out += '\\';
+    }
+    out += ch;
+  }
+
+  return out;
+}
+
+function hl(text) {
+  const tokens = getSearchTokens(VIEW.search);
+
+  if (!tokens.length) {
+    return esc(text);
+  }
+
+  const pattern = new RegExp('(' + tokens.map(escapeRegExp).join('|') + ')', 'gi');
+
+  return esc(text).replace(pattern, '<mark>$1</mark>');
+}
+
+function qCardHtml(q){
+  return `<div class="qcard" data-id="${q.id}">
+    <div class="qtitle">${q.hasCode?'💻 ':''}${hl(q.q)}</div>
+    <div class="qmeta">
+      <span class="badge b-${q.displayDiff}">${q.displayDiff}</span>
+      ${q.tags.slice(0,4).map(t=>`<span class="tag" data-tag="${esc(t)}">${esc(t)}</span>`).join('')}
+      <span style="margin-left:auto">${statusDots(q)}</span>
+    </div></div>`;
+}
+
+/* ============ Renders ============ */
+function render(){
+  updateHeaderProgress();
+  if(VIEW.type==='dashboard')renderDashboard();
+  else if(VIEW.type==='questions')renderQuestions();
+  else if(VIEW.type==='detail')renderDetail(VIEW.currentId);
+  else if(VIEW.type==='continue')renderContinue();
+  else if(VIEW.type==='interview')renderInterview();
+  else if(VIEW.type==='weak')renderWeak();
+  else if(VIEW.type==='validation')renderValidation();
+}
+
+function renderQuestions(){
+  const list=getFiltered();
+  const total=list.length,pages=Math.max(1,Math.ceil(total/PER_PAGE));
+  if(VIEW.page>pages)VIEW.page=pages;
+  const slice=list.slice((VIEW.page-1)*PER_PAGE,VIEW.page*PER_PAGE);
+  const title=VIEW.cat==='__all'?'All Questions':VIEW.cat;
+  main.innerHTML=`
+   <h2 style="margin-bottom:12px">${esc(title)} <span style="color:var(--muted);font-size:.9rem">(${total} questions)</span></h2>
+   <div class="filters">
+     <select id="fDiff"><option value="">All Difficulty</option>${['Beginner','Junior','Intermediate','Advanced','Expert'].map(d=>`<option ${VIEW.filters.difficulty===d?'selected':''}>${d}</option>`).join('')}</select>
+     <select id="fStatus">
+       <option value="">All Status</option>
+       <option value="completed" ${VIEW.filters.status==='completed'?'selected':''}>Completed</option>
+       <option value="notcompleted" ${VIEW.filters.status==='notcompleted'?'selected':''}>Not Completed</option>
+       <option value="bookmarked" ${VIEW.filters.status==='bookmarked'?'selected':''}>Bookmarked</option>
+       <option value="revision" ${VIEW.filters.status==='revision'?'selected':''}>Needs Revision</option>
+     </select>
+     ${VIEW.filters.tag?`<span class="chip active" id="clearTag">Tag: ${esc(VIEW.filters.tag)} ✕</span>`:''}
+   </div>
+   <div id="qlist">${slice.map(qCardHtml).join('')||'<p style="color:var(--muted)">No questions match your filters.</p>'}</div>
+   <div class="pager">
+     <button ${VIEW.page<=1?'disabled':''} id="prevP">← Prev</button>
+     <span>Page ${VIEW.page} / ${pages}</span>
+     <button ${VIEW.page>=pages?'disabled':''} id="nextP">Next →</button>
+   </div>`;
+  document.getElementById('fDiff').onchange=e=>{VIEW.filters.difficulty=e.target.value;VIEW.page=1;render();};
+  document.getElementById('fStatus').onchange=e=>{VIEW.filters.status=e.target.value;VIEW.page=1;render();};
+  const ct=document.getElementById('clearTag');if(ct)ct.onclick=()=>{VIEW.filters.tag='';render();};
+  const pp=document.getElementById('prevP'),np=document.getElementById('nextP');
+  if(pp)pp.onclick=()=>{VIEW.page--;render();window.scrollTo(0,0);};
+  if(np)np.onclick=()=>{VIEW.page++;render();window.scrollTo(0,0);};
+  bindCards();
+}
+function bindCards(){
+  main.querySelectorAll('.qcard').forEach(c=>{
+    c.onclick=e=>{
+      if(e.target.classList.contains('tag')){VIEW.filters.tag=e.target.dataset.tag;VIEW.type='questions';VIEW.page=1;render();return;}
+      openDetail(c.dataset.id);
+    };
+  });
+}
+
+function openDetail(id){VIEW.type='detail';VIEW.currentId=id;STATE.lastQuestion=id;saveState();render();window.scrollTo(0,0);}
+
+function renderDetail(id){
+  const q=BY_ID[id];if(!q){main.innerHTML='<p>Not found</p>';return;}
+  const ans=q.__ans||(q.__ans=genAnswer(q));
+  const diagram=genDiagram(q);
+  const related=q.relatedQuestions.map(rid=>BY_ID[rid]).filter(Boolean);
+  main.innerHTML=`
+   <div class="detail-nav">
+     <button class="btn sm" id="backBtn">← Back to list</button>
+     <div style="display:flex;gap:6px">
+       <button class="btn sm" id="prevQ">◀ Prev</button>
+       <button class="btn sm" id="randQ">🎲 Random</button>
+       <button class="btn sm" id="nextUnc">➡ Next Uncompleted</button>
+       <button class="btn sm" id="nextQ">Next ▶</button>
+     </div>
+   </div>
+   <div class="detail">
+     <h2>${esc(q.q)}</h2>
+     <div class="qmeta" style="margin-bottom:8px">
+       <span class="badge b-${q.displayDiff}">${q.displayDiff}</span>
+       ${q.tags.map(t=>`<span class="tag" data-tag="${esc(t)}">${esc(t)}</span>`).join('')}
+     </div>
+     <div style="font-size:.82rem;color:var(--muted)">Status: ${STATE.completed[id]?'✅ Completed':'⬜ Not Completed'} ${STATE.bookmarked[id]?'· 🔖 Bookmarked':''} ${STATE.revision[id]?'· 🔁 Revision':''}</div>
+
+     <div class="section"><h3>Short Answer</h3><div class="answer-body"><p>${ans.short}</p></div></div>
+     <div class="section"><h3>Deep Explanation</h3><div class="answer-body">${ans.deep}</div></div>
+     <div class="section"><h3>Real World Example</h3><div class="answer-body">${ans.real}</div></div>
+     ${ans.code?`<div class="section"><h3>Code Example</h3><pre>${highlightCode(ans.code)}</pre></div>`:''}
+     ${diagram?`<div class="section"><h3>How It Works</h3><div class="diagram">${esc(diagram)}</div></div>`:''}
+     <div class="section"><h3>Common Mistakes</h3><ul class="answer-body">${ans.mistakes.map(m=>`<li>${esc(m)}</li>`).join('')}</ul></div>
+     <div class="section"><h3>Interview Follow-up Questions</h3><ul class="answer-body">${ans.follow.map(m=>`<li>${esc(m)}</li>`).join('')}</ul></div>
+     <div class="section"><h3>My Notes</h3><textarea id="noteArea" style="width:100%;min-height:70px;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--text)" placeholder="Add personal notes...">${esc(STATE.notes[id]||'')}</textarea></div>
+     <div class="section"><h3>Related Questions</h3><div class="related-list">
+        ${related.map(r=>`<a data-id="${r.id}">[${esc(r.topic)}] ${esc(r.q)}</a>`).join('')||'<span style="color:var(--muted)">None</span>'}
+     </div></div>
+     <div class="action-row">
+        <button class="btn ${STATE.completed[id]?'primary':''}" id="btnComplete">${STATE.completed[id]?'✅ Completed':'Mark Complete'}</button>
+        <button class="btn ${STATE.bookmarked[id]?'primary':''}" id="btnBook">${STATE.bookmarked[id]?'🔖 Bookmarked':'Bookmark'}</button>
+        <button class="btn ${STATE.revision[id]?'primary':''}" id="btnRev">${STATE.revision[id]?'🔁 Revision':'Needs Revision'}</button>
+     </div>
+   </div>`;
+  document.getElementById('backBtn').onclick=()=>{VIEW.type='questions';render();};
+  document.querySelectorAll('.related-list a').forEach(a=>a.onclick=()=>openDetail(a.dataset.id));
+  main.querySelectorAll('.tag').forEach(t=>t.onclick=()=>{VIEW.type='questions';VIEW.cat='__all';VIEW.filters={difficulty:'',status:'',tag:t.dataset.tag};VIEW.page=1;render();});
+  document.getElementById('noteArea').onblur=e=>{if(e.target.value)STATE.notes[id]=e.target.value;else delete STATE.notes[id];saveState();};
+  const toggle=(map,key,label)=>{if(STATE[map][id])delete STATE[map][id];else STATE[map][id]=Date.now();saveState();updateStreak();render();checkAchievements();toast(label);};
+  document.getElementById('btnComplete').onclick=()=>toggle('completed','',STATE.completed[id]?'Marked incomplete':'Marked complete! 🎉');
+  document.getElementById('btnBook').onclick=()=>toggle('bookmarked','',STATE.bookmarked[id]?'Removed bookmark':'Bookmarked 🔖');
+  document.getElementById('btnRev').onclick=()=>toggle('revision','','Revision toggled 🔁');
+  // navigation
+  const list=getFiltered();const idx=list.findIndex(x=>x.id===id);
+  document.getElementById('prevQ').onclick=()=>{if(idx>0)openDetail(list[idx-1].id);};
+  document.getElementById('nextQ').onclick=()=>{if(idx<list.length-1)openDetail(list[idx+1].id);};
+  document.getElementById('randQ').onclick=()=>openDetail(QUESTIONS[Math.floor(Math.random()*QUESTIONS.length)].id);
+  document.getElementById('nextUnc').onclick=()=>{const n=QUESTIONS.find(x=>!STATE.completed[x.id]);if(n)openDetail(n.id);else toast('All questions completed! 🏆');};
+}
+
+function renderDashboard(){
+  const c=completedCount(),tot=QUESTIONS.length,pct=Math.round(c/tot*100);
+  // by topic
+  const topics={};QUESTIONS.forEach(q=>{topics[q.topic]=topics[q.topic]||{t:0,c:0};topics[q.topic].t++;if(STATE.completed[q.id])topics[q.topic].c++;});
+  // by difficulty
+  const diffs={};['Beginner','Junior','Intermediate','Advanced','Expert'].forEach(d=>diffs[d]={t:0,c:0});
+  QUESTIONS.forEach(q=>{diffs[q.displayDiff].t++;if(STATE.completed[q.id])diffs[q.displayDiff].c++;});
+  const recent=[...Object.entries(STATE.completed)].sort((a,b)=>b[1]-a[1]).slice(0,5).map(e=>BY_ID[e[0]]).filter(Boolean);
+  main.innerHTML=`
+   <h2 style="margin-bottom:16px">📊 Progress Dashboard</h2>
+   <div class="dash-grid">
+     <div class="stat-card"><div class="num">${tot}</div><div class="lbl">Total Questions</div></div>
+     <div class="stat-card"><div class="num">${c}</div><div class="lbl">Completed</div></div>
+     <div class="stat-card"><div class="num">${tot-c}</div><div class="lbl">Remaining</div></div>
+     <div class="stat-card"><div class="num">${Object.keys(STATE.bookmarked).length}</div><div class="lbl">Bookmarked</div></div>
+     <div class="stat-card"><div class="num">${Object.keys(STATE.revision).length}</div><div class="lbl">Needs Revision</div></div>
+     <div class="stat-card"><div class="num">🔥 ${STATE.streak}</div><div class="lbl">Day Streak</div></div>
+   </div>
+   <div class="stat-card" style="margin-bottom:20px">
+     <div class="prog-row"><div class="top"><b>Overall Progress</b><span>${pct}%</span></div><div class="bar"><div class="fill" style="width:${pct}%"></div></div></div>
+   </div>
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+     <div class="stat-card"><h3 style="margin-bottom:12px">By Difficulty</h3>
+       ${Object.entries(diffs).map(([d,v])=>{const p=v.t?Math.round(v.c/v.t*100):0;return `<div class="prog-row"><div class="top"><span>${d}</span><span>${v.c}/${v.t}</span></div><div class="bar"><div class="fill" style="width:${p}%"></div></div></div>`;}).join('')}
+     </div>
+     <div class="stat-card"><h3 style="margin-bottom:12px">Recent Activity</h3>
+       ${recent.length?recent.map(r=>`<div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:.85rem;cursor:pointer" class="recent-item" data-id="${r.id}">✅ [${esc(r.topic)}] ${esc(r.q.slice(0,50))}...</div>`).join(''):'<span style="color:var(--muted)">Complete questions to see activity</span>'}
+     </div>
+   </div>
+   <div class="stat-card" style="margin-top:16px"><h3 style="margin-bottom:12px">Completion by Technology</h3>
+     ${Object.entries(topics).sort((a,b)=>b[1].t-a[1].t).map(([t,v])=>{const p=v.t?Math.round(v.c/v.t*100):0;return `<div class="prog-row"><div class="top"><span class="topic-link" data-cat="${esc(t)}" style="cursor:pointer;color:var(--accent)">${esc(t)}</span><span>${v.c}/${v.t} (${p}%)</span></div><div class="bar"><div class="fill" style="width:${p}%"></div></div></div>`;}).join('')}
+   </div>
+   <h3 style="margin:24px 0 12px">🏆 Achievements</h3>
+   <div class="badges" id="achArea"></div>`;
+  main.querySelectorAll('.recent-item').forEach(el=>el.onclick=()=>openDetail(el.dataset.id));
+  main.querySelectorAll('.topic-link').forEach(el=>el.onclick=()=>{VIEW={type:'questions',cat:el.dataset.cat,page:1,filters:{difficulty:'',status:'',tag:''},search:VIEW.search};render();});
+  renderAchievements();
+}
+
+const ACHIEVEMENTS=[
+  {id:'first',ico:'🎯',t:'First Step',d:'Complete first question',test:()=>completedCount()>=1},
+  {id:'cs25',ico:'⚡',t:'C# Explorer',d:'Complete 25 C# questions',test:()=>QUESTIONS.filter(q=>q.topic==='C#'&&STATE.completed[q.id]).length>=25},
+  {id:'sql50',ico:'🗄️',t:'SQL Warrior',d:'Complete 50 SQL questions',test:()=>QUESTIONS.filter(q=>(q.topic==='SQL Server'||q.topic==='Databases')&&STATE.completed[q.id]).length>=50},
+  {id:'sd25',ico:'🏛️',t:'System Designer',d:'Complete 25 System Design',test:()=>QUESTIONS.filter(q=>q.topic==='System Design'&&STATE.completed[q.id]).length>=25},
+  {id:'50',ico:'🔟',t:'Half Century',d:'Complete 50 questions',test:()=>completedCount()>=50},
+  {id:'200',ico:'💪',t:'Grinder',d:'Complete 200 questions',test:()=>completedCount()>=200},
+  {id:'streak7',ico:'🔥',t:'On Fire',d:'7-day streak',test:()=>STATE.streak>=7},
+  {id:'ready',ico:'🏆',t:'Interview Ready',d:'Complete 90% of all',test:()=>completedCount()/QUESTIONS.length>=0.9}
+];
+function renderAchievements(){
+  const area=document.getElementById('achArea');if(!area)return;
+  area.innerHTML=ACHIEVEMENTS.map(a=>`<div class="ach ${a.test()?'unlocked':''}"><div class="ico">${a.ico}</div><div class="t">${a.t}</div><div class="d">${a.d}</div></div>`).join('');
+}
+let unlockedSet=new Set(ACHIEVEMENTS.filter(a=>a.test()).map(a=>a.id));
+function checkAchievements(){
+  ACHIEVEMENTS.forEach(a=>{if(a.test()&&!unlockedSet.has(a.id)){unlockedSet.add(a.id);toast('🏆 Achievement: '+a.t);}});
+}
+
+function renderContinue(){
+  const last=STATE.lastQuestion?BY_ID[STATE.lastQuestion]:null;
+  const nextUnc=QUESTIONS.find(q=>!STATE.completed[q.id]);
+  main.innerHTML=`<h2 style="margin-bottom:16px">▶ Continue Learning</h2>
+    <div class="dash-grid">
+      <div class="stat-card"><div class="lbl">Continue where you left off</div>
+        ${last?`<div style="margin:10px 0;font-weight:600">${esc(last.q)}</div><span class="badge b-${last.displayDiff}">${last.displayDiff}</span><br><button class="btn primary" style="margin-top:10px" id="cLast">Continue →</button>`:'<p style="color:var(--muted)">No history yet</p>'}
+      </div>
+      <div class="stat-card"><div class="lbl">Next Uncompleted</div>
+        ${nextUnc?`<div style="margin:10px 0;font-weight:600">${esc(nextUnc.q)}</div><button class="btn primary" style="margin-top:10px" id="cNext">Start →</button>`:'<p>All done! 🏆</p>'}
+      </div>
+      <div class="stat-card"><div class="lbl">Random Practice</div>
+        <p style="margin:10px 0;color:var(--muted)">Test yourself with a random question</p>
+        <button class="btn primary" id="cRand">🎲 Random Question</button>
+      </div>
+      <div class="stat-card"><div class="lbl">Practice Weak Areas</div>
+        <p style="margin:10px 0;color:var(--muted)">Focus on topics with low completion</p>
+        <button class="btn primary" id="cWeak">⚠ Practice Weak Areas</button>
+      </div>
+    </div>`;
+  if(last)document.getElementById('cLast').onclick=()=>openDetail(last.id);
+  if(nextUnc)document.getElementById('cNext').onclick=()=>openDetail(nextUnc.id);
+  document.getElementById('cRand').onclick=()=>openDetail(QUESTIONS[Math.floor(Math.random()*QUESTIONS.length)].id);
+  document.getElementById('cWeak').onclick=()=>{setActiveNav('weak');VIEW.type='weak';render();};
+}
+
+function weakAreas(){
+  const topics={};QUESTIONS.forEach(q=>{topics[q.topic]=topics[q.topic]||{t:0,c:0,rev:0};topics[q.topic].t++;if(STATE.completed[q.id])topics[q.topic].c++;if(STATE.revision[q.id])topics[q.topic].rev++;});
+  return Object.entries(topics).map(([t,v])=>({topic:t,pct:v.t?Math.round(v.c/v.t*100):0,rev:v.rev,total:v.t,done:v.c})).sort((a,b)=>a.pct-b.pct);
+}
+function renderWeak(){
+  const wa=weakAreas().filter(w=>w.pct<100).slice(0,12);
+  main.innerHTML=`<h2 style="margin-bottom:16px">⚠ My Weak Areas</h2>
+   <p style="color:var(--muted);margin-bottom:14px">Ranked by lowest completion. Focus your practice here.</p>
+   ${wa.map(w=>`<div class="weak-item">
+      <div><b>${esc(w.topic)}</b><br><span style="font-size:.8rem;color:var(--muted)">Completion: ${w.pct}% · ${w.done}/${w.total} · ${w.rev} for revision</span>
+      <div class="bar" style="height:8px;margin-top:6px;background:var(--border);border-radius:20px;overflow:hidden"><div style="width:${w.pct}%;height:100%;background:linear-gradient(90deg,var(--warn),var(--bad))"></div></div></div>
+      <button class="btn sm primary weak-btn" data-cat="${esc(w.topic)}">Practice</button>
+   </div>`).join('')||'<p>All topics complete! 🏆</p>'}`;
+  main.querySelectorAll('.weak-btn').forEach(b=>b.onclick=()=>{
+    const nq=QUESTIONS.find(q=>q.topic===b.dataset.cat&&!STATE.completed[q.id]);
+    if(nq)openDetail(nq.id);else{VIEW={type:'questions',cat:b.dataset.cat,page:1,filters:{difficulty:'',status:'',tag:''},search:''};render();}
+  });
+}
+
+/* Interview Mode */
+let ivState={q:null,shown:false,timer:0,int:null};
+function renderInterview(){
+  main.innerHTML=`<h2 style="margin-bottom:16px">🎯 Interview Mode</h2>
+   <div class="filters">
+     <select id="ivTopic"><option value="">Any Topic</option>${Object.keys(RAW).sort().map(t=>`<option>${esc(t)}</option>`).join('')}</select>
+     <select id="ivDiff"><option value="">Any Difficulty</option>${['Beginner','Junior','Intermediate','Advanced','Expert'].map(d=>`<option>${d}</option>`).join('')}</select>
+     <button class="btn primary" id="ivStart">Start / Next Question</button>
+   </div>
+   <div id="ivArea"><p style="color:var(--muted)">Select filters and click Start. The question shows first — try to answer, then reveal.</p></div>`;
+  document.getElementById('ivStart').onclick=ivNext;
+}
+function ivNext(){
+  const t=document.getElementById('ivTopic').value,d=document.getElementById('ivDiff').value;
+  let pool=QUESTIONS.filter(q=>(!t||q.topic===t)&&(!d||q.displayDiff===d));
+  if(!pool.length){document.getElementById('ivArea').innerHTML='<p>No matching questions.</p>';return;}
+  ivState.q=pool[Math.floor(Math.random()*pool.length)];ivState.shown=false;ivState.timer=0;
+  if(ivState.int)clearInterval(ivState.int);
+  ivState.int=setInterval(()=>{ivState.timer++;const el=document.getElementById('ivTimer');if(el)el.textContent=fmtTime(ivState.timer);},1000);
+  drawIv();
+}
+function fmtTime(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function drawIv(){
+  const q=ivState.q,ans=q.__ans||(q.__ans=genAnswer(q));
+  document.getElementById('ivArea').innerHTML=`
+   <div class="detail">
+     <div class="qmeta" style="margin-bottom:8px"><span class="badge b-${q.displayDiff}">${q.displayDiff}</span><span class="tag">${esc(q.topic)}</span></div>
+     <h2>${esc(q.q)}</h2>
+     <div class="iv-timer" id="ivTimer">${fmtTime(ivState.timer)}</div>
+     ${ivState.shown?`
+        <div class="section"><h3>Answer</h3><div class="answer-body"><p>${ans.short}</p>${ans.deep}</div>
+        ${ans.code?`<pre>${highlightCode(ans.code)}</pre>`:''}</div>
+        <p style="text-align:center;margin:12px 0;font-weight:600">How did you do?</p>
+        <div class="iv-controls">
+          <button class="btn primary" id="ivKnew">✅ I knew it</button>
+          <button class="btn" id="ivPartial">🟡 Partially</button>
+          <button class="btn" id="ivFail">❌ Didn't know</button>
+          <button class="btn" id="ivFull">Open Full Detail</button>
+        </div>`:`
+        <div class="iv-controls"><button class="btn primary" id="ivShow">Show Answer</button></div>`}
+   </div>`;
+  if(!ivState.shown){document.getElementById('ivShow').onclick=()=>{ivState.shown=true;drawIv();};}
+  else{
+    const record=(r)=>{STATE.interviewResults[ivState.q.id]=r;if(r==='knew')STATE.completed[ivState.q.id]=Date.now();if(r==='fail')STATE.revision[ivState.q.id]=Date.now();saveState();updateStreak();checkAchievements();ivNext();};
+    document.getElementById('ivKnew').onclick=()=>record('knew');
+    document.getElementById('ivPartial').onclick=()=>record('partial');
+    document.getElementById('ivFail').onclick=()=>record('fail');
+    document.getElementById('ivFull').onclick=()=>{if(ivState.int)clearInterval(ivState.int);openDetail(ivState.q.id);};
+  }
+}
+
+/* Validation */
+function renderValidation(){
+  const ids=new Set(),dupes=[];let noQ=0,noAns=0,broken=0;
+  QUESTIONS.forEach(q=>{if(ids.has(q.id))dupes.push(q.id);ids.add(q.id);if(!q.q)noQ++;const a=genAnswer(q);if(!a.short)noAns++;q.relatedQuestions.forEach(r=>{if(!BY_ID[r])broken++;});});
+  const validDiff=QUESTIONS.every(q=>['Beginner','Junior','Intermediate','Advanced','Expert'].includes(q.displayDiff));
+  const pass=dupes.length===0&&noQ===0&&noAns===0&&broken===0&&validDiff;
+  const byTopic={};QUESTIONS.forEach(q=>byTopic[q.topic]=(byTopic[q.topic]||0)+1);
+  const byDiff={};QUESTIONS.forEach(q=>byDiff[q.displayDiff]=(byDiff[q.displayDiff]||0)+1);
+  main.innerHTML=`<h2 style="margin-bottom:16px">🔧 Dataset Validation</h2>
+   <div class="validation">
+Dataset validation: <span class="${pass?'pass':''}">${pass?'PASS ✅':'FAIL ❌'}</span>
+
+Total Questions:        ${QUESTIONS.length}
+Unique IDs:             ${ids.size}
+Duplicate IDs:          ${dupes.length}
+Questions missing title:${noQ}
+Questions missing answer:${noAns}
+Broken related refs:    ${broken}
+Valid difficulties:     ${validDiff?'YES':'NO'}
+Questions completed:    ${completedCount()}
+Questions remaining:    ${QUESTIONS.length-completedCount()}
+   </div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+     <div class="stat-card"><h3 style="margin-bottom:10px">By Technology</h3><div class="validation" style="background:none;padding:0">${Object.entries(byTopic).sort((a,b)=>b[1]-a[1]).map(([t,c])=>esc(t)+': '+c).join('\n')}</div></div>
+     <div class="stat-card"><h3 style="margin-bottom:10px">By Difficulty</h3><div class="validation" style="background:none;padding:0">${['Beginner','Junior','Intermediate','Advanced','Expert'].map(d=>d+': '+(byDiff[d]||0)).join('\n')}</div></div>
+   </div>`;
+}
+
+/* ============ Search ============ */
+let searchTimer;
+document.getElementById('searchInput').oninput=e=>{
+  clearTimeout(searchTimer);
+  searchTimer=setTimeout(()=>{VIEW.search=e.target.value;VIEW.type='questions';if(VIEW.cat===undefined)VIEW.cat='__all';VIEW.page=1;setActiveNav('questions');render();},250);
+};
+
+/* ============ Theme ============ */
+function applyTheme(){document.body.setAttribute('data-theme',STATE.theme);document.getElementById('themeBtn').textContent=STATE.theme==='dark'?'☀️':'🌙';}
+document.getElementById('themeBtn').onclick=()=>{STATE.theme=STATE.theme==='dark'?'light':'dark';saveState();applyTheme();};
+applyTheme();
+
+/* ============ Export / Import ============ */
+document.getElementById('exportBtn').onclick=()=>{
+  const data={version:1,exportedAt:new Date().toISOString(),
+    completedQuestions:Object.keys(STATE.completed),bookmarkedQuestions:Object.keys(STATE.bookmarked),
+    revisionQuestions:Object.keys(STATE.revision),notes:STATE.notes,lastQuestion:STATE.lastQuestion,
+    theme:STATE.theme,streak:STATE.streak,sessions:STATE.sessions,interviewResults:STATE.interviewResults};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='dotnet-mastery-progress.json';a.click();
+  toast('Progress exported ⬇');
+};
+document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();
+document.getElementById('importFile').onchange=e=>{
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(!data.version||!Array.isArray(data.completedQuestions))throw 'Invalid file format';
+      showImportModal(data);
+    }catch(err){toast('Import failed: invalid file');}
+    e.target.value='';
+  };
+  reader.readAsText(file);
+};
+function showImportModal(data){
+  const cur=completedCount(),imp=data.completedQuestions.length;
+  document.getElementById('modalArea').innerHTML=`
+   <div class="modal-bg"><div class="modal">
+     <h3>Import Progress</h3>
+     <div class="row"><span>Current progress:</span><b>${cur} completed</b></div>
+     <div class="row"><span>Imported progress:</span><b>${imp} completed</b></div>
+     <p style="margin:14px 0;color:var(--muted);font-size:.85rem">Choose how to apply the imported data.</p>
+     <div style="display:flex;gap:8px;justify-content:flex-end">
+       <button class="btn" id="mCancel">Cancel</button>
+       <button class="btn" id="mMerge">Merge</button>
+       <button class="btn primary" id="mReplace">Replace</button>
+     </div>
+   </div></div>`;
+  const arr2obj=a=>{const o={};(a||[]).forEach(id=>o[id]=Date.now());return o;};
+  const close=()=>document.getElementById('modalArea').innerHTML='';
+  document.getElementById('mCancel').onclick=close;
+  document.getElementById('mReplace').onclick=()=>{
+    STATE.completed=arr2obj(data.completedQuestions);STATE.bookmarked=arr2obj(data.bookmarkedQuestions);
+    STATE.revision=arr2obj(data.revisionQuestions);STATE.notes=data.notes||{};STATE.lastQuestion=data.lastQuestion||null;
+    STATE.theme=data.theme||STATE.theme;STATE.streak=data.streak||0;STATE.interviewResults=data.interviewResults||{};
+    saveState();applyTheme();close();render();toast('Progress replaced ✅');
+  };
+  document.getElementById('mMerge').onclick=()=>{
+    Object.assign(STATE.completed,arr2obj(data.completedQuestions));
+    Object.assign(STATE.bookmarked,arr2obj(data.bookmarkedQuestions));
+    Object.assign(STATE.revision,arr2obj(data.revisionQuestions));
+    Object.assign(STATE.notes,data.notes||{});STATE.interviewResults=Object.assign(STATE.interviewResults,data.interviewResults||{});
+    STATE.streak=Math.max(STATE.streak,data.streak||0);
+    saveState();close();render();toast('Progress merged ✅');
+  };
+}
+
+/* Mobile sidebar */
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');}
+document.getElementById('menuBtn').onclick=()=>document.getElementById('sidebar').classList.toggle('open');
+
+/* ============ Init ============ */
+buildTopicNav();
+render();
+console.log('Loaded',QUESTIONS.length,'questions across',Object.keys(RAW).length,'topics');
+</script>
+</body>
+</html>
